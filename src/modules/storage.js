@@ -18,6 +18,10 @@ const storage = {
    },
 
    removeFolder(name) {
+      for (let i = 0; i < this.todos.length; i++) {
+         if (this.todos[i].folder === name) this.todos[i].folder = 'todos';
+      }
+
       this.folders = this.folders.filter(folder => folder !== name);
    },
 
