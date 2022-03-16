@@ -2,42 +2,62 @@
 
 import uniqid from 'uniqid';
 
-const storage = {
-   todos: [],
-   folders: [],
-   defaultFolder: 'todos',
+const storage = (function() {
+   let _todos = [];
+   let _folders = [];
+   let _defaultFolder = 'todos';
 
-   addFolder(name) {
+   const getFolders = function() {
+      return [..._folders];
+   };
+
+   const addFolder = function(name) {
       let newFolderName = name;
 
       newFolderName = String(newFolderName).trim().replace(/[\<\>\/\\]/ig, '');
 
-      if (newFolderName && !this.folders.includes(newFolderName) && newFolderName !== 'todos') {
-         this.folders.push(newFolderName);
+      if (newFolderName && !_folders.includes(newFolderName) && newFolderName !== _defaultFolder) {
+         _folders.push(newFolderName);
       }
-   },
+   };
 
-   removeFolder(name) {
-      for (let i = 0; i < this.todos.length; i++) {
-         if (this.todos[i].folder === name) this.todos[i].folder = 'todos';
+   const removeFolder = function(name) {
+      for (let i = 0; i < _todos.length; i++) {
+         if (_todos[i].folder === name) _todos[i].folder = _defaultFolder;
       }
 
-      this.folders = this.folders.filter(folder => folder !== name);
-   },
+      _folders = _folders.filter(folder => folder !== name);
+   };
 
-   addTodo(todoObj, folderName) {
+   const getTodos = function() {
+      let todosCopy = [];
+
+      _todos.forEach(todo => todosCopy.push( Object.assign({}, todo) ));
+      return todosCopy;
+   };
+
+   const addTodo = function(todoObj, folderName) {
       folderName = String(folderName).trim().replace(/[\<\>\/\\]/ig, '');
 
       if (todoObj instanceof Object && folderName) {
-         todoObj.folder = (this.folders.includes(folderName)) ? folderName : 'todos';
+         todoObj.folder = (_folders.includes(folderName)) ? folderName : _defaultFolder;
          todoObj.id = uniqid();
-         this.todos.push(todoObj);
+         _todos.push(todoObj);
       }
-   },
+   };
 
-   removeTodo(id) {
-      this.todos = this.todos.filter(todo => todo.id !== id);
-   },
-};
+   const removeTodo = function(id) {
+      _todos = _todos.filter(todo => todo.id !== id);
+   };
+
+   return {
+      getFolders,
+      addFolder,
+      removeFolder,
+      getTodos,
+      addTodo,
+      removeTodo,
+   };
+})();
 
 export default storage;
