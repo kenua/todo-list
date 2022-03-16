@@ -1,6 +1,7 @@
 'use strict';
 
 import uniqid from 'uniqid';
+import removeWeirdChars from '../utils/removeWeirdChars.js';
 
 const storage = (function() {
    let _todos = [];
@@ -50,6 +51,21 @@ const storage = (function() {
       _todos = _todos.filter(todo => todo.id !== id);
    };
 
+   const editTodo = function(id, opt) {
+      if (opt instanceof Object) {
+         let { title, desc, dueDate, priority, finished } = opt;
+         let [ todo ] = _todos.filter(todo => todo.id === id);
+   
+         if (title) todo.title = removeWeirdChars(title);
+         if (desc) todo.desc = removeWeirdChars(desc);
+         if (dueDate instanceof Date || dueDate === null) todo.dueDate = dueDate;
+         if (priority === 'low' || 
+             priority === 'medium' || 
+             priority === 'high') todo.priority = priority;
+         if (!!finished || !(!!finished)) todo.finished = !!finished;
+      }
+   };
+
    return {
       getFolders,
       addFolder,
@@ -57,6 +73,7 @@ const storage = (function() {
       getTodos,
       addTodo,
       removeTodo,
+      editTodo,
    };
 })();
 
