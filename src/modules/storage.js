@@ -1,7 +1,7 @@
 'use strict';
 
 import uniqid from 'uniqid';
-import removeWeirdChars from '../utils/removeWeirdChars.js';
+import sanitizeText from '../utils/sanitizeText.js';
 
 const storage = (function() {
    let _todos = [];
@@ -15,7 +15,7 @@ const storage = (function() {
    const addFolder = function(name) {
       let newFolderName = name;
 
-      newFolderName = String(newFolderName).trim().replace(/[\<\>\/\\]/ig, '');
+      newFolderName = sanitizeText(String(newFolderName));
 
       if (newFolderName && !_folders.includes(newFolderName) && newFolderName !== _defaultFolder) {
          _folders.push(newFolderName);
@@ -38,7 +38,7 @@ const storage = (function() {
    };
 
    const addTodo = function(todoObj, folderName) {
-      folderName = String(folderName).trim().replace(/[\<\>\/\\]/ig, '');
+      folderName = sanitizeText(String(folderName));
 
       if (todoObj instanceof Object && folderName) {
          todoObj.folder = (_folders.includes(folderName)) ? folderName : _defaultFolder;
@@ -56,8 +56,8 @@ const storage = (function() {
          let { title, desc, dueDate, priority, finished } = opt;
          let [ todo ] = _todos.filter(todo => todo.id === id);
    
-         if (title) todo.title = removeWeirdChars(title);
-         if (desc) todo.desc = removeWeirdChars(desc);
+         if (title) todo.title = sanitizeText(title);
+         if (desc) todo.desc = sanitizeText(desc);
          if (dueDate instanceof Date || dueDate === null) todo.dueDate = dueDate;
          if (priority === 'low' || 
              priority === 'medium' || 
