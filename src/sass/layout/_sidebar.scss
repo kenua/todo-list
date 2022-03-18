@@ -1,0 +1,80 @@
+@use 'sass:map';
+@use '../custom' as * ;
+
+.sidebar {
+   &__item {
+      text-align: left;
+      background-color: #00000000;
+      padding: map.get($spacers, 2);
+      border: none;
+      width: 100%;
+      display: block;
+
+      i {
+         display: inline-block;
+         margin-right: map.get($spacers, 1);
+      }
+   }
+
+   &__item--flex {
+      display: flex;
+      justify-content: space-between;
+   }
+
+   &__item--hover {
+      &:hover {
+         background-color: $dark-gray;
+      }
+   }
+
+   &__button {
+      background-color: #00000000;
+      color: $primary;
+      width: 1.5rem;
+      height: 1.5rem;
+      padding: 0;
+      border-radius: 50%;
+      border: none;
+      transition: background-color 250ms ease-in-out;
+      vertical-align: middle;
+      position: relative;
+
+      &:hover {
+         background-color: $dark-gray;
+      }
+
+      i {
+         position: absolute;
+         top: 50%;
+         left: 50%;
+         transform: translate(-50%, -50%);
+      }
+   }
+
+   &__button-container {
+      min-width: 60px;
+      display: flex;
+      justify-content: space-between;
+   }
+
+   &__button--checkmark {
+      text-indent: -9999px;
+      width: 1.2rem;
+      height: 1.2rem;
+      border: 1px solid $primary;
+      margin-right: .2rem;
+   }
+
+   &__todos-list {
+      padding-left: map.get($spacers, 3);
+   }
+
+   &__anchor {
+      text-decoration: none;
+      color: $dark;
+
+      &:hover {
+         color: inherit;
+      }
+   }
+}
