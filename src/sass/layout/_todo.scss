@@ -1,0 +1,31 @@
+@use 'sass:map';
+@use '../custom' as * ;
+
+.todo {
+   &__top {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: map.get($spacers, 3);
+      border-bottom: 1px solid $dark-gray;
+      margin-bottom: map.get($spacers, 4);
+
+      @include media-breakpoint-up(lg) {
+         flex-direction: row;
+         justify-content: space-between;
+      }
+   }
+
+   .options__button {
+      background-color: #00000000;
+      color: $gray-700;
+      font-size: map.get($font-sizes, 5);
+      border: none;
+      transition: transform 250ms ease-in-out;
+
+      &:hover {
+         color: $dark;
+         transform: scale(1.3);
+      }
+   }
+}
