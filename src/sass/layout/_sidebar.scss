@@ -27,6 +27,23 @@
       }
    }
 
+   #sidebar-input-container {
+      display: none;
+   }
+
+   &__input {
+      background-color: #00000000;
+      border: none;
+      width: 100%;
+      padding-left: map.get($spacers, 1);
+   }
+
+   &__create-button {
+      text-align: center;
+      border-top: 1px solid $dark-gray;
+      border-bottom: 1px solid $dark-gray;
+   }
+
    &__button {
       background-color: #00000000;
       color: $primary;
