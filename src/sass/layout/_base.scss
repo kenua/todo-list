@@ -1,0 +1,7 @@
+@use '../custom' as *;
+
+body {
+   @include media-breakpoint-up(lg) {
+      overflow: hidden;   
+   }
+}

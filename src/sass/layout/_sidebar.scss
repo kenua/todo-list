@@ -77,4 +77,13 @@
          color: inherit;
       }
    }
+
+   @include media-breakpoint-up(lg) {
+      width: 30%;
+      height: 100%;
+      overflow: auto;
+      position: fixed;
+      top: map.get($spacers, 1);
+      left: 0;
+   }
 }

@@ -5,12 +5,257 @@
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta name="author" content="Kenua">
+   <script src="https://kit.fontawesome.com/e80ec1ef51.js" crossorigin="anonymous"></script>
    <title> Todo List </title>
 <script defer src="main.js"></script></head>
 <body>
+   <div class="top-bar bg-primary pb-1"></div>
    <main>
-      <section id="left-side"></section>
-      <section id="right-side"></section>
+      <!--# SIDEBAR -->
+      <section id="sidebar" class="sidebar container-fluid p-0 pb-5 bg-gray">
+         <button type="button" class="sidebar__item sidebar__item--hover border-bottom border-dark-gray">
+            <i class="fa-solid fa-folder-plus"></i>
+            new folder
+         </button>
+
+         <ul id="folders" class="list-unstyled m-0">
+            <li>
+               <div class="sidebar__item sidebar__item--flex border-bottom border-dark-gray">
+                  <p class="fs-6 m-0">  <i class="fa-solid fa-folder"></i> Todos </p>
+   
+                  <button 
+                     type="button" 
+                     class="sidebar__button" 
+                     data-button-type="add" 
+                     data-folder="todos"
+                     title="Add new todo"
+                  >
+                     <i class="fa-solid fa-plus"></i>
+                  </button>
+               </div>
+
+               <ul class="sidebar__todos-list list-unstyled">
+                  <li>
+                     <a href="#{id}" class="sidebar__anchor sidebar__item sidebar__item--flex sidebar__item--hover">
+                        <p class="fs-6 m-0"> 
+                           <i class="fa-solid fa-circle text-blue"></i> 
+                           Make the bed 
+                        </p>
+                        <span class="sidebar__button">
+                           <i class="fa-solid fa-chevron-right"></i>
+                        </span>
+                     </a>
+                  </li>
+                  <li>
+                     <a href="#{id}" class="sidebar__anchor sidebar__item sidebar__item--flex sidebar__item--hover">
+                        <p class="fs-6 m-0"> 
+                           <i class="fa-solid fa-circle text-red"></i> 
+                           Finish this project 
+                        </p>
+                        <span class="sidebar__button">
+                           <i class="fa-solid fa-chevron-right"></i>
+                        </span>
+                     </a>
+                  </li>
+                  <li>
+                     <a href="#{id}" class="sidebar__anchor sidebar__item sidebar__item--flex sidebar__item--hover">
+                        <p class="fs-6 m-0"> 
+                           <i class="fa-solid fa-circle text-yellow"></i> 
+                           Plublish it on github pages
+                        </p>
+                        <span class="sidebar__button">
+                           <i class="fa-solid fa-chevron-right"></i>
+                        </span>
+                     </a>
+                  </li>
+                  <li>
+                     <a href="#{id}" class="sidebar__anchor sidebar__item sidebar__item--flex sidebar__item--hover">
+                        <p class="fs-6 m-0"> 
+                           <i class="fa-solid fa-circle text-yellow"></i> 
+                           Plublish it on github pages
+                        </p>
+                        <span class="sidebar__button">
+                           <i class="fa-solid fa-chevron-right"></i>
+                        </span>
+                     </a>
+                  </li>
+                  <li>
+                     <a href="#{id}" class="sidebar__anchor sidebar__item sidebar__item--flex sidebar__item--hover">
+                        <p class="fs-6 m-0"> 
+                           <i class="fa-solid fa-circle text-yellow"></i> 
+                           Plublish it on github pages
+                        </p>
+                        <span class="sidebar__button">
+                           <i class="fa-solid fa-chevron-right"></i>
+                        </span>
+                     </a>
+                  </li>
+                  <li>
+                     <a href="#{id}" class="sidebar__anchor sidebar__item sidebar__item--flex sidebar__item--hover">
+                        <p class="fs-6 m-0"> 
+                           <i class="fa-solid fa-circle text-yellow"></i> 
+                           Plublish it on github pages
+                        </p>
+                        <span class="sidebar__button">
+                           <i class="fa-solid fa-chevron-right"></i>
+                        </span>
+                     </a>
+                  </li>
+                  <li>
+                     <a href="#{id}" class="sidebar__anchor sidebar__item sidebar__item--flex sidebar__item--hover">
+                        <p class="fs-6 m-0"> 
+                           <i class="fa-solid fa-circle text-yellow"></i> 
+                           Plublish it on github pages
+                        </p>
+                        <span class="sidebar__button">
+                           <i class="fa-solid fa-chevron-right"></i>
+                        </span>
+                     </a>
+                  </li>
+                  <li>
+                     <a href="#{id}" class="sidebar__anchor sidebar__item sidebar__item--flex sidebar__item--hover">
+                        <p class="fs-6 m-0"> 
+                           <i class="fa-solid fa-circle text-yellow"></i> 
+                           Plublish it on github pages
+                        </p>
+                        <span class="sidebar__button">
+                           <i class="fa-solid fa-chevron-right"></i>
+                        </span>
+                     </a>
+                  </li>
+                  <li>
+                     <a href="#{id}" class="sidebar__anchor sidebar__item sidebar__item--flex sidebar__item--hover">
+                        <p class="fs-6 m-0"> 
+                           <i class="fa-solid fa-circle text-yellow"></i> 
+                           Plublish it on github pages
+                        </p>
+                        <span class="sidebar__button">
+                           <i class="fa-solid fa-chevron-right"></i>
+                        </span>
+                     </a>
+                  </li>
+                  <li>
+                     <a href="#{id}" class="sidebar__anchor sidebar__item sidebar__item--flex sidebar__item--hover">
+                        <p class="fs-6 m-0"> 
+                           <i class="fa-solid fa-circle text-yellow"></i> 
+                           Plublish it on github pages
+                        </p>
+                        <span class="sidebar__button">
+                           <i class="fa-solid fa-chevron-right"></i>
+                        </span>
+                     </a>
+                  </li>
+               </ul>
+            </li>
+
+            <li>
+               <div class="sidebar__item sidebar__item--flex border-bottom border-dark-gray">
+                  <p class="fs-6 m-0">  <i class="fa-solid fa-folder"></i> tasks </p>
+   
+                  <div class="sidebar__button-container">
+                     <button 
+                        type="button" 
+                        class="sidebar__button" 
+                        data-button-type="delete" 
+                        data-folder="todos"
+                        title="Delete folder"
+                     >
+                        <i class="fa-solid fa-minus"></i>
+                     </button>
+                     <button 
+                        type="button" 
+                        class="sidebar__button" 
+                        data-button-type="add" 
+                        data-folder="todos"
+                        title="Add new todo"
+                     >
+                        <i class="fa-solid fa-plus"></i>
+                     </button>
+                  </div>
+               </div>
+
+               <ul class="sidebar__todos-list list-unstyled">
+                  <li>
+                     <a href="#{id}" class="sidebar__anchor sidebar__item sidebar__item--flex sidebar__item--hover">
+                        <p class="fs-6 m-0"> 
+                           <i class="fa-solid fa-circle text-yellow"></i> 
+                           Make Ramona's food
+                        </p>
+                        <span class="sidebar__button">
+                           <i class="fa-solid fa-chevron-right"></i>
+                        </span>
+                     </a>
+                  </li>
+                  <li>
+                     <a href="#{id}" class="sidebar__anchor sidebar__item sidebar__item--flex sidebar__item--hover">
+                        <p class="fs-6 m-0"> 
+                           <i class="fa-solid fa-circle text-red"></i> 
+                           Clean your nose 
+                        </p>
+                        <span class="sidebar__button">
+                           <i class="fa-solid fa-chevron-right"></i>
+                        </span>
+                     </a>
+                  </li>
+                  <li>
+                     <a href="#{id}" class="sidebar__anchor sidebar__item sidebar__item--flex sidebar__item--hover">
+                        <p class="fs-6 m-0"> 
+                           <i class="fa-solid fa-circle text-blue"></i> 
+                           Return the stolen statue
+                        </p>
+                        <span class="sidebar__button">
+                           <i class="fa-solid fa-chevron-right"></i>
+                        </span>
+                     </a>
+                  </li>
+               </ul>
+            </li>
+         </ul>
+      </section>
+
+      <!-- # TODO -->
+      <section id="todo" class="todo container-fuild p-3 p-lg-5">
+         <div class="todo__top">
+            <h1 class="todo__title text-center mb-4 mb-lg-0">
+               <span id="todo-title" class="fs-1 fw-bold text-capitalize">[TODO_TITLE]</span>
+               <span id="todo-dueDate" class="fs-4 fw-light text-uppercase">[TODO_DUEDATE]</span>
+            </h1>
+
+            <ul class="list-unstyled todo__options  d-flex align-items-center m-0">
+               <li class="me-2">
+                  <button id="mark-todo" class="options__button" title="Mark todo">
+                     <!--<i class="fa-solid fa-circle"></i></i>-->
+                     <i class="fa-regular fa-circle"></i>
+                  </button>
+               </li>
+               <li class="me-2">
+                  <button id="edit-todo" class="options__button" title="Edit todo">
+                     <i class="fa-solid fa-pen-to-square"></i>
+                  </button>
+               </li>
+               <li>
+                  <button id="delete-todo" class="options__button" title="Delete todo">
+                     <i class="fa-solid fa-trash-can"></i></i>
+                  </button>
+               </li>
+            </ul>
+         </div>
+
+         <div id="todo-content">
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat magni aliquid enim officia culpa veniam laboriosam. Ab, fugiat eaque aut sapiente labore repudiandae iste veniam tempora quod ipsa qui delectus perspiciatis dicta tenetur amet quasi illum, doloremque dolorum culpa. Similique, minima numquam. Esse voluptate reiciendis omnis deserunt! Consectetur, reiciendis debitis?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat magni aliquid enim officia culpa veniam laboriosam. Ab, fugiat eaque aut sapiente labore repudiandae iste veniam tempora quod ipsa qui delectus perspiciatis dicta tenetur amet quasi illum, doloremque dolorum culpa. Similique, minima numquam. Esse voluptate reiciendis omnis deserunt! Consectetur, reiciendis debitis?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat magni aliquid enim officia culpa veniam laboriosam. Ab, fugiat eaque aut sapiente labore repudiandae iste veniam tempora quod ipsa qui delectus perspiciatis dicta tenetur amet quasi illum, doloremque dolorum culpa. Similique, minima numquam. Esse voluptate reiciendis omnis deserunt! Consectetur, reiciendis debitis?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat magni aliquid enim officia culpa veniam laboriosam. Ab, fugiat eaque aut sapiente labore repudiandae iste veniam tempora quod ipsa qui delectus perspiciatis dicta tenetur amet quasi illum, doloremque dolorum culpa. Similique, minima numquam. Esse voluptate reiciendis omnis deserunt! Consectetur, reiciendis debitis?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat magni aliquid enim officia culpa veniam laboriosam. Ab, fugiat eaque aut sapiente labore repudiandae iste veniam tempora quod ipsa qui delectus perspiciatis dicta tenetur amet quasi illum, doloremque dolorum culpa. Similique, minima numquam. Esse voluptate reiciendis omnis deserunt! Consectetur, reiciendis debitis?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat magni aliquid enim officia culpa veniam laboriosam. Ab, fugiat eaque aut sapiente labore repudiandae iste veniam tempora quod ipsa qui delectus perspiciatis dicta tenetur amet quasi illum, doloremque dolorum culpa. Similique, minima numquam. Esse voluptate reiciendis omnis deserunt! Consectetur, reiciendis debitis?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat magni aliquid enim officia culpa veniam laboriosam. Ab, fugiat eaque aut sapiente labore repudiandae iste veniam tempora quod ipsa qui delectus perspiciatis dicta tenetur amet quasi illum, doloremque dolorum culpa. Similique, minima numquam. Esse voluptate reiciendis omnis deserunt! Consectetur, reiciendis debitis?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat magni aliquid enim officia culpa veniam laboriosam. Ab, fugiat eaque aut sapiente labore repudiandae iste veniam tempora quod ipsa qui delectus perspiciatis dicta tenetur amet quasi illum, doloremque dolorum culpa. Similique, minima numquam. Esse voluptate reiciendis omnis deserunt! Consectetur, reiciendis debitis?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat magni aliquid enim officia culpa veniam laboriosam. Ab, fugiat eaque aut sapiente labore repudiandae iste veniam tempora quod ipsa qui delectus perspiciatis dicta tenetur amet quasi illum, doloremque dolorum culpa. Similique, minima numquam. Esse voluptate reiciendis omnis deserunt! Consectetur, reiciendis debitis?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat magni aliquid enim officia culpa veniam laboriosam. Ab, fugiat eaque aut sapiente labore repudiandae iste veniam tempora quod ipsa qui delectus perspiciatis dicta tenetur amet quasi illum, doloremque dolorum culpa. Similique, minima numquam. Esse voluptate reiciendis omnis deserunt! Consectetur, reiciendis debitis?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat magni aliquid enim officia culpa veniam laboriosam. Ab, fugiat eaque aut sapiente labore repudiandae iste veniam tempora quod ipsa qui delectus perspiciatis dicta tenetur amet quasi illum, doloremque dolorum culpa. Similique, minima numquam. Esse voluptate reiciendis omnis deserunt! Consectetur, reiciendis debitis?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat magni aliquid enim officia culpa veniam laboriosam. Ab, fugiat eaque aut sapiente labore repudiandae iste veniam tempora quod ipsa qui delectus perspiciatis dicta tenetur amet quasi illum, doloremque dolorum culpa. Similique, minima numquam. Esse voluptate reiciendis omnis deserunt! Consectetur, reiciendis debitis?</p>
+         </div>
+      </section>
    </main>
 </body>
 </html>
