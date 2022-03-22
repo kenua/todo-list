@@ -1,4 +1,4 @@
 import './sass/styles.scss';
-import appendMarkup from './markup/index.js';
+import appendMarkup from './html/index.js';
 
 appendMarkup();

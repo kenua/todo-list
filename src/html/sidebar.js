@@ -4,7 +4,7 @@ export default function appendSidebar() {
    sidebar.className = 'sidebar container-fluid p-0 pb-5 bg-gray';
    sidebar.id = 'sidebar';
    sidebar.innerHTML = `
-   <button type="button" class="sidebar__item sidebar__item--hover border-bottom border-dark-gray">
+   <button type="button" id="new-folder-button" class="sidebar__item sidebar__item--hover border-bottom border-dark-gray">
       <i class="fa-solid fa-folder-plus"></i>
       new folder
    </button>
@@ -18,6 +18,7 @@ export default function appendSidebar() {
    </form>
 
    <ul id="folders" class="list-unstyled m-0">
+   <!--
       <li>
          <div class="sidebar__item sidebar__item--flex border-bottom border-dark-gray">
             <p class="fs-6 m-0">  <i class="fa-solid fa-folder"></i> Todos </p>
@@ -146,7 +147,8 @@ export default function appendSidebar() {
             </li>
          </ul>
       </li>
-
+      -->
+      <!--
       <li>
          <div class="sidebar__item sidebar__item--flex border-bottom border-dark-gray">
             <p class="fs-6 m-0">  <i class="fa-solid fa-folder"></i> tasks </p>
@@ -209,6 +211,7 @@ export default function appendSidebar() {
             </li>
          </ul>
       </li>
+      -->
    </ul>
    `;
    document.querySelector('#content').append(sidebar);

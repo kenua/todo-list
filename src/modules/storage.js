@@ -19,6 +19,8 @@ const storage = (function() {
 
       if (newFolderName && !_folders.includes(newFolderName) && newFolderName !== _defaultFolder) {
          _folders.push(newFolderName);
+      } else {
+         throw new Error('Folder name is invalid');
       }
    };
 
