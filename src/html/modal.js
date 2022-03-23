@@ -1,6 +1,7 @@
 export default function appendModal() {
    const modal = document.createElement('div');
 
+   modal.id = 'modal';
    modal.className = 'modal modal--hidden';
    modal.innerHTML = `
    <form id="modal-form" class="modal__form">

@@ -17,6 +17,8 @@ export default function appendMarkup() {
       const newFolderBtn = document.querySelector('#new-folder-button');
       const sidebarInputContainer = document.querySelector('#sidebar-input-container');
       const folders = document.querySelector('#folders');
+      const modal = document.querySelector('#modal');
+      const modalTitle = document.querySelector('#modal__title');
 
       function createTodoItems(folder) {
          let result = [];
@@ -40,13 +42,36 @@ export default function appendMarkup() {
          return result;
       }
 
+      function openModal(folder) {
+         modal.classList.remove('modal--hidden');
+         modalTitle.textContent = `Create new todo in ${folder} folder`;
+      }
+
+      function deleteFolder() {
+         if ( confirm(`Do you want to delete "${this.dataset.folder}" folder?`) ) {
+            storage.removeFolder(this.dataset.folder);
+            printSidebarContent();
+         }
+      }
+
       function printTodoFolder() {
          let todoFolder = document.createElement('li');
+         let createBtn = document.createElement('button');
          let subList = document.createElement('ul');
 
          todoFolder.innerHTML = todoFolderButton;
+
+         createBtn.type = 'button';
+         createBtn.className = 'sidebar__button';
+         createBtn.dataset.folder = "todos";
+         createBtn.title = "Add new todo";
+         createBtn.innerHTML = '<i class="fa-solid fa-plus"></i>';
+         createBtn.addEventListener('click', openModal.bind(null, 'todos'));
+
          subList.className = 'sidebar__todos-list list-unstyled';
          subList.append( ...createTodoItems('todos') );
+
+         todoFolder.firstElementChild.append(createBtn);
          todoFolder.append(subList);
          folders.append(todoFolder);
       }
@@ -54,11 +79,30 @@ export default function appendMarkup() {
       function printCustomFolders() {
          storage.getFolders().forEach(folder => {
             let folderButton = document.createElement('li');
+            let createBtn = document.createElement('button');
+            let deleteBtn = document.createElement('button');
             let subList = document.createElement('ul');
 
             folderButton.innerHTML = customFolderButton.replace(/\[FOLDER\]/g, folder);
+
+            deleteBtn.type = 'button';
+            deleteBtn.className = 'sidebar__button';
+            deleteBtn.dataset.folder = folder;
+            deleteBtn.title = "Delete folder";
+            deleteBtn.innerHTML = '<i class="fa-solid fa-minus"></i>';
+            deleteBtn.addEventListener('click', deleteFolder.bind(deleteBtn));
+
+            createBtn.type = 'button';
+            createBtn.className = 'sidebar__button';
+            createBtn.dataset.folder = folder;
+            createBtn.title = "Add new todo";
+            createBtn.innerHTML = '<i class="fa-solid fa-plus"></i>';
+            createBtn.addEventListener('click', openModal.bind(null, folder));
+
             subList.className = 'sidebar__todos-list list-unstyled';
             subList.append( ...createTodoItems(folder) );
+
+            folderButton.firstElementChild.lastElementChild.append(deleteBtn, createBtn);
             folderButton.append(subList);
             folders.append(folderButton);
          });
