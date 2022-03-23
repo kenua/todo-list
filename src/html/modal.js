@@ -28,9 +28,14 @@ export default function appendModal() {
       <div class="mb-5">
          <p class="modal__label">
             Reminder: 
-            <button type="button" id="reminder-button" class="modal__button" data-state="off">
-               OFF
-            </button>
+            <button 
+               type="button" 
+               name="reminder" 
+               value="off"
+               id="reminder-button" 
+               class="modal__button" 
+               >
+            OFF</button>
          </p>
          <div id="reminder-container" class="raminder--hidden">
             <div class="flex-grow-1 me-2">

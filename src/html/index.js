@@ -18,7 +18,10 @@ export default function appendMarkup() {
       const sidebarInputContainer = document.querySelector('#sidebar-input-container');
       const folders = document.querySelector('#folders');
       const modal = document.querySelector('#modal');
+      const modalForm = document.querySelector('#modal-form');
       const modalTitle = document.querySelector('#modal__title');
+      const reminderBtn = document.querySelector('#reminder-button');
+      const reminderContainer = document.querySelector('#reminder-container');
 
       function createTodoItems(folder) {
          let result = [];
@@ -114,6 +117,39 @@ export default function appendMarkup() {
          printCustomFolders();
       }
 
+      function closeModal(e) {
+         let target = e.target;
+
+         if (target.id === 'modal' || target.id === 'cancel-button') {
+            modal.classList.add('modal--hidden');
+            
+            // reset modal field values
+            modalForm.elements.title.value = '';
+            modalForm.elements.description.value = '';
+            modalForm.elements.priority.value = 'low';
+            reminderBtn.value = 'off';
+            reminderBtn.textContent = 'OFF';
+            reminderContainer.classList.add('raminder--hidden');
+            modalForm.elements.day.value = '';
+            modalForm.elements.month.value = '';
+            modalForm.elements.year.value = '';
+         }
+      }
+
+      function toggleReminderContainer(e) {
+         let target = e.target;
+
+         if (target.value === 'off') {
+            target.value = 'on';
+            target.textContent = 'ON';
+            reminderContainer.classList.remove('raminder--hidden');
+         } else {
+            target.value = 'off';
+            target.textContent = 'OFF';
+            reminderContainer.classList.add('raminder--hidden');
+         }
+      }
+
       printSidebarContent();
 
       newFolderBtn.addEventListener('click', e => {
@@ -139,5 +175,8 @@ export default function appendMarkup() {
 
          e.preventDefault();
       });
+
+      modal.addEventListener('click', closeModal);
+      reminderBtn.addEventListener('click', toggleReminderContainer);
    });
 }
