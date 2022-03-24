@@ -7,6 +7,7 @@ import '../test/todoSamples.js';
 import todoFolderButton from './markup/todoFolderButton.html';
 import customFolderButton from './markup/customFolderButton.html';
 import todoItemButton from './markup/todoItemButton.html';
+import sanitizeText from '../utils/sanitizeText.js';
 
 export default function appendMarkup() {
    document.addEventListener('DOMContentLoaded', e => {
@@ -22,6 +23,10 @@ export default function appendMarkup() {
       const modalTitle = document.querySelector('#modal__title');
       const reminderBtn = document.querySelector('#reminder-button');
       const reminderContainer = document.querySelector('#reminder-container');
+      const modalErrorMsg = document.querySelectorAll('.modal__error-msg');
+      let submissionType = null;
+      let newTodoFolder = null;
+      let todoId = null;
 
       function createTodoItems(folder) {
          let result = [];
@@ -46,8 +51,15 @@ export default function appendMarkup() {
       }
 
       function openModal(folder) {
+         let today = new Date();
+
+         submissionType = 'new';
+         newTodoFolder = folder;
          modal.classList.remove('modal--hidden');
          modalTitle.textContent = `Create new todo in ${folder} folder`;
+         modalForm.elements.day.value = today.getDate();
+         modalForm.elements.month.value = today.getMonth() + 1;
+         modalForm.elements.year.value = today.getFullYear();
       }
 
       function deleteFolder() {
@@ -117,23 +129,21 @@ export default function appendMarkup() {
          printCustomFolders();
       }
 
-      function closeModal(e) {
-         let target = e.target;
-
-         if (target.id === 'modal' || target.id === 'cancel-button') {
-            modal.classList.add('modal--hidden');
-            
-            // reset modal field values
-            modalForm.elements.title.value = '';
-            modalForm.elements.description.value = '';
-            modalForm.elements.priority.value = 'low';
-            reminderBtn.value = 'off';
-            reminderBtn.textContent = 'OFF';
-            reminderContainer.classList.add('raminder--hidden');
-            modalForm.elements.day.value = '';
-            modalForm.elements.month.value = '';
-            modalForm.elements.year.value = '';
-         }
+      function closeModal() {
+         modal.classList.add('modal--hidden');
+         
+         // reset modal field values
+         modalForm.elements.title.value = '';
+         modalForm.elements.description.value = '';
+         modalForm.elements.priority.value = 'low';
+         reminderBtn.value = 'off';
+         reminderBtn.textContent = 'OFF';
+         reminderContainer.classList.remove('reminder--show');
+         reminderContainer.classList.add('reminder--hidden');
+         modalForm.elements.day.value = '';
+         modalForm.elements.month.value = '';
+         modalForm.elements.year.value = '';
+         [...modalErrorMsg].forEach(erroMsg => erroMsg.classList.remove('modal__error-msg--show'));
       }
 
       function toggleReminderContainer(e) {
@@ -142,11 +152,78 @@ export default function appendMarkup() {
          if (target.value === 'off') {
             target.value = 'on';
             target.textContent = 'ON';
-            reminderContainer.classList.remove('raminder--hidden');
+            reminderContainer.classList.remove('reminder--hidden');
+            reminderContainer.classList.add('reminder--show');
          } else {
             target.value = 'off';
             target.textContent = 'OFF';
-            reminderContainer.classList.add('raminder--hidden');
+            reminderContainer.classList.remove('reminder--show');
+            reminderContainer.classList.add('reminder--hidden');
+         }
+      }
+
+      function validateSubmission() {
+         let { title, description, priority, reminder, day, month, year } = modalForm.elements;
+         let submitForm = true;
+
+         if (sanitizeText(title.value).length === 0 || sanitizeText(title.value).length > 50) {
+            title.nextElementSibling.classList.add('modal__error-msg--show');
+            submitForm = false;
+         } else {
+            title.nextElementSibling.classList.remove('modal__error-msg--show');
+         }
+
+         if (sanitizeText(description.value).length === 0 || sanitizeText(description.value).length > 50) {
+            description.nextElementSibling.classList.add('modal__error-msg--show');
+            submitForm = false;
+         } else {
+            description.nextElementSibling.classList.remove('modal__error-msg--show');
+         }
+
+         if (priority.value !== 'low' && priority.value !== 'medium' && priority.value !== 'high') {
+            submitForm = false;
+         }
+
+         if (reminder.value === 'on') {
+            if ( (day.value < 1 || day.value > 32) || 
+                 (month.value < 1 || month.value > 12) ||
+                 year.value < 1970) {
+               reminderContainer.lastElementChild.classList.add('modal__error-msg--show');
+               submitForm = false;
+            } else {
+               reminderContainer.lastElementChild.classList.remove('modal__error-msg--show');   
+            }
+         } else {
+            reminderContainer.lastElementChild.classList.remove('modal__error-msg--show');
+         }
+
+         return submitForm;
+      }
+
+      function handleSubmission(e) {
+         e.preventDefault();
+
+         if (validateSubmission()) {
+            // create new todo
+            if (submissionType === 'new') {
+               let { title, description, priority, reminder, day, month, year } = modalForm.elements;
+               let dueDate = (reminder.value === 'on') ? new Date(+year.value, +month.value, +day.value) : null;
+               let newTodo = new Todos(
+                  sanitizeText(title.value),
+                  sanitizeText(description.value),
+                  dueDate,
+                  priority.value,
+                  false
+               );
+
+               storage.addTodo(newTodo, newTodoFolder);
+               printSidebarContent();
+               closeModal();
+            }
+
+            // edit todo
+            if (submissionType === 'edit') {
+            }
          }
       }
 
@@ -176,7 +253,8 @@ export default function appendMarkup() {
          e.preventDefault();
       });
 
-      modal.addEventListener('click', closeModal);
+      modal.addEventListener('click', e => (e.target.id === 'modal' || e.target.id === 'cancel-button') ? closeModal() : null);
       reminderBtn.addEventListener('click', toggleReminderContainer);
+      modalForm.addEventListener('submit', handleSubmission);
    });
 }

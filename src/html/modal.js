@@ -4,16 +4,18 @@ export default function appendModal() {
    modal.id = 'modal';
    modal.className = 'modal modal--hidden';
    modal.innerHTML = `
-   <form id="modal-form" class="modal__form">
+   <form id="modal-form" class="modal__form" novalidate>
       <h1 id="modal__title" class="fs-2 fw-bold text-capitalize text-center mb-5"></h1>
       <div class="mb-5">
          <label for="title" class="modal__label">Title</label>
          <input type="text" name="title" id="title" class="modal__input" placeholder="Take out trash">
+         <p class="modal__error-msg">Title is required and it shouldn't be greater than 50 characters long!</p>
       </div>
 
       <div class="mb-5">
          <label for="description" class="modal__label">Description</label>
          <textarea type="text" name="description" id="description" class="modal__input modal__textarea"></textarea>
+         <p class="modal__error-msg">Description is required and it shouldn't be greater than 500 characters long!</p>
       </div>
 
       <div class="mb-5">
@@ -33,25 +35,28 @@ export default function appendModal() {
                name="reminder" 
                value="off"
                id="reminder-button" 
-               class="modal__button" 
+               class="modal__button fs-6" 
                >
             OFF</button>
          </p>
-         <div id="reminder-container" class="raminder--hidden">
-            <div class="flex-grow-1 me-2">
-               <label for="day" class="modal__label d-block">Day</label>
-               <input type="number" name="day" id="day" class="modal__input" max="31" min="1" placeholder="DD">
-            </div>
+         <div id="reminder-container" class="reminder--hidden">
+            <div class="d-flex">
+               <div class="flex-grow-1 me-2">
+                  <label for="day" class="modal__label d-block">Day</label>
+                  <input type="number" name="day" id="day" class="modal__input" max="31" min="1" placeholder="DD">
+               </div>
 
-            <div class="flex-grow-1 me-2">
-               <label for="month" class="modal__label d-block">Month</label>
-               <input type="number" name="month" id="month" class="modal__input" max="12" min="1" placeholder="MM">
-            </div>
+               <div class="flex-grow-1 me-2">
+                  <label for="month" class="modal__label d-block">Month</label>
+                  <input type="number" name="month" id="month" class="modal__input" max="12" min="1" placeholder="MM">
+               </div>
 
-            <div class="flex-grow-1">
-               <label for="year" class="modal__label d-block">Year</label>
-               <input type="number" name="year" id="year" class="modal__input" max="99999" min="1970" placeholder="YY">
+               <div class="flex-grow-1">
+                  <label for="year" class="modal__label d-block">Year</label>
+                  <input type="number" name="year" id="year" class="modal__input" max="99999" min="1970" placeholder="YY">
+               </div>
             </div>
+            <p class="modal__error-msg mt-2">Couldn't understand you date format, try again...</p>
          </div>
       </div>
 
