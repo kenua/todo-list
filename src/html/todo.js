@@ -6,15 +6,15 @@ export default function appendTodo() {
    todo.innerHTML = `
    <div class="todo__top">
       <h1 class="todo__title text-center mb-4 mb-lg-0">
-         <span id="todo-title" class="fs-1 fw-bold text-capitalize">[TODO_TITLE]</span>
-         <span id="todo-dueDate" class="fs-4 fw-light text-uppercase">[TODO_DUEDATE]</span>
+         <span id="todo-title" class="fs-1 fw-bold text-capitalize"></span>
+         <span id="todo-dueDate" class="fs-4 fw-light text-uppercase"></span>
       </h1>
 
       <ul class="list-unstyled todo__options  d-flex align-items-center m-0">
          <li class="me-2">
             <button id="mark-todo" class="options__button" title="Mark todo">
                <!--<i class="fa-solid fa-circle"></i></i>-->
-               <i class="fa-regular fa-circle"></i>
+               <i id="mark-symbol" class="fa-regular fa-circle"></i>
             </button>
          </li>
          <li class="me-2">
@@ -31,6 +31,7 @@ export default function appendTodo() {
    </div>
 
    <div id="todo-content">
+   <!--
       <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat magni aliquid enim officia culpa veniam laboriosam. Ab, fugiat eaque aut sapiente labore repudiandae iste veniam tempora quod ipsa qui delectus perspiciatis dicta tenetur amet quasi illum, doloremque dolorum culpa. Similique, minima numquam. Esse voluptate reiciendis omnis deserunt! Consectetur, reiciendis debitis?</p>
       <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat magni aliquid enim officia culpa veniam laboriosam. Ab, fugiat eaque aut sapiente labore repudiandae iste veniam tempora quod ipsa qui delectus perspiciatis dicta tenetur amet quasi illum, doloremque dolorum culpa. Similique, minima numquam. Esse voluptate reiciendis omnis deserunt! Consectetur, reiciendis debitis?</p>
       <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat magni aliquid enim officia culpa veniam laboriosam. Ab, fugiat eaque aut sapiente labore repudiandae iste veniam tempora quod ipsa qui delectus perspiciatis dicta tenetur amet quasi illum, doloremque dolorum culpa. Similique, minima numquam. Esse voluptate reiciendis omnis deserunt! Consectetur, reiciendis debitis?</p>
@@ -43,6 +44,7 @@ export default function appendTodo() {
       <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat magni aliquid enim officia culpa veniam laboriosam. Ab, fugiat eaque aut sapiente labore repudiandae iste veniam tempora quod ipsa qui delectus perspiciatis dicta tenetur amet quasi illum, doloremque dolorum culpa. Similique, minima numquam. Esse voluptate reiciendis omnis deserunt! Consectetur, reiciendis debitis?</p>
       <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat magni aliquid enim officia culpa veniam laboriosam. Ab, fugiat eaque aut sapiente labore repudiandae iste veniam tempora quod ipsa qui delectus perspiciatis dicta tenetur amet quasi illum, doloremque dolorum culpa. Similique, minima numquam. Esse voluptate reiciendis omnis deserunt! Consectetur, reiciendis debitis?</p>
       <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat magni aliquid enim officia culpa veniam laboriosam. Ab, fugiat eaque aut sapiente labore repudiandae iste veniam tempora quod ipsa qui delectus perspiciatis dicta tenetur amet quasi illum, doloremque dolorum culpa. Similique, minima numquam. Esse voluptate reiciendis omnis deserunt! Consectetur, reiciendis debitis?</p>
+   -->
    </div>
    `;
    document.querySelector('#content').append(todo);

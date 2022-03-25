@@ -24,9 +24,17 @@ export default function appendMarkup() {
       const reminderBtn = document.querySelector('#reminder-button');
       const reminderContainer = document.querySelector('#reminder-container');
       const modalErrorMsg = document.querySelectorAll('.modal__error-msg');
+      const todoContainer = document.querySelector('#todo');
+      const todoTitle = document.querySelector('#todo-title');
+      const todoDuedate = document.querySelector('#todo-dueDate');
+      const todoContent = document.querySelector('#todo-content');
+      const markSymbol = document.querySelector('#mark-symbol');
+      const markTodoBtn = document.querySelector('#mark-todo');
+      const editTodoBtn = document.querySelector('#edit-todo');
+      const deleteTodoBtn = document.querySelector('#delete-todo');
       let submissionType = null;
       let newTodoFolder = null;
-      let todoId = null;
+      let currentTodoId = null;
 
       function createTodoItems(folder) {
          let result = [];
@@ -50,22 +58,70 @@ export default function appendMarkup() {
          return result;
       }
 
-      function openModal(folder) {
-         let today = new Date();
+      function openModal(folder, type) {
+         if (type === 'new') {
+            let today = new Date();
+   
+            submissionType = 'new';
+            newTodoFolder = folder;
+            modal.classList.remove('modal--hidden');
+            modalTitle.textContent = `Create new todo in ${folder} folder`;
+            modalForm.elements.day.value = today.getDate();
+            modalForm.elements.month.value = today.getMonth() + 1;
+            modalForm.elements.year.value = today.getFullYear();
+         }
 
-         submissionType = 'new';
-         newTodoFolder = folder;
-         modal.classList.remove('modal--hidden');
-         modalTitle.textContent = `Create new todo in ${folder} folder`;
-         modalForm.elements.day.value = today.getDate();
-         modalForm.elements.month.value = today.getMonth() + 1;
-         modalForm.elements.year.value = today.getFullYear();
+         if (type === 'edit') {
+            let [ todo ] = storage.getTodos().filter(todo => todo.id === currentTodoId);
+            let { title, description, priority, day, month, year } = modalForm.elements;
+
+            submissionType = 'edit';
+            modal.classList.remove('modal--hidden');
+            modalTitle.textContent = `Edit Todo`;
+            title.value = todo.title;
+            description.value = todo.desc;
+            priority.value = todo.priority;
+
+            if (todo.dueDate) {
+               toggleReminderContainer();
+               day.value = todo.dueDate.getDate();
+               month.value = todo.dueDate.getMonth() + 1;
+               year.value = todo.dueDate.getFullYear();
+            } else {
+               let today = new Date();
+
+               day.value = today.getDate();
+               month.value = today.getMonth() + 1;
+               year.value = today.getFullYear();
+            }
+         }
       }
 
       function deleteFolder() {
          if ( confirm(`Do you want to delete "${this.dataset.folder}" folder?`) ) {
             storage.removeFolder(this.dataset.folder);
             printSidebarContent();
+         }
+      }
+
+      function printTodo(todoObj) {
+         todoTitle.textContent = todoObj.title;
+         todoDuedate.textContent = (todoObj.dueDate) ? todoObj.dueDate.toDateString() : '';
+         todoContent.textContent = todoObj.desc;
+         markSymbol.className = (todoObj.finished) ? 'fa-solid fa-circle' : 'fa-regular fa-circle';
+      }
+
+      function selectTodo(e) {
+         e.preventDefault();
+
+         let anchor = e.target.closest('a.sidebar__anchor');
+
+         if (anchor) {
+            let [ todo ] = storage.getTodos().filter(todo => todo.id === anchor.getAttribute('href'));
+            anchor.classList.add('modal__item--selected');
+            todoContainer.style.display = 'block';
+            currentTodoId = todo.id;
+            printTodo(todo);
          }
       }
 
@@ -81,10 +137,11 @@ export default function appendMarkup() {
          createBtn.dataset.folder = "todos";
          createBtn.title = "Add new todo";
          createBtn.innerHTML = '<i class="fa-solid fa-plus"></i>';
-         createBtn.addEventListener('click', openModal.bind(null, 'todos'));
+         createBtn.addEventListener('click', openModal.bind(null, 'todos', 'new'));
 
          subList.className = 'sidebar__todos-list list-unstyled';
          subList.append( ...createTodoItems('todos') );
+         subList.addEventListener('click', selectTodo);
 
          todoFolder.firstElementChild.append(createBtn);
          todoFolder.append(subList);
@@ -112,10 +169,11 @@ export default function appendMarkup() {
             createBtn.dataset.folder = folder;
             createBtn.title = "Add new todo";
             createBtn.innerHTML = '<i class="fa-solid fa-plus"></i>';
-            createBtn.addEventListener('click', openModal.bind(null, folder));
+            createBtn.addEventListener('click', () => openModal(folder, 'new'));
 
             subList.className = 'sidebar__todos-list list-unstyled';
             subList.append( ...createTodoItems(folder) );
+            subList.addEventListener('click', selectTodo);
 
             folderButton.firstElementChild.lastElementChild.append(deleteBtn, createBtn);
             folderButton.append(subList);
@@ -146,17 +204,15 @@ export default function appendMarkup() {
          [...modalErrorMsg].forEach(erroMsg => erroMsg.classList.remove('modal__error-msg--show'));
       }
 
-      function toggleReminderContainer(e) {
-         let target = e.target;
-
-         if (target.value === 'off') {
-            target.value = 'on';
-            target.textContent = 'ON';
+      function toggleReminderContainer() {
+         if (reminderBtn.value === 'off') {
+            reminderBtn.value = 'on';
+            reminderBtn.textContent = 'ON';
             reminderContainer.classList.remove('reminder--hidden');
             reminderContainer.classList.add('reminder--show');
          } else {
-            target.value = 'off';
-            target.textContent = 'OFF';
+            reminderBtn.value = 'off';
+            reminderBtn.textContent = 'OFF';
             reminderContainer.classList.remove('reminder--show');
             reminderContainer.classList.add('reminder--hidden');
          }
@@ -223,8 +279,38 @@ export default function appendMarkup() {
 
             // edit todo
             if (submissionType === 'edit') {
+               let { title, description, priority, reminder, day, month, year } = modalForm.elements;
+               let dueDate = (reminder.value === 'on') ? new Date(+year.value, +month.value, +day.value) : null;
+
+               storage.editTodo(currentTodoId, {
+                  title: title.value,
+                  desc: description.value,
+                  priority: priority.value,
+                  dueDate,
+               });
+
+               console.log(storage.getTodos().filter(todo => todo.id === currentTodoId));
+
+               printSidebarContent();
+               printTodo(...storage.getTodos().filter(todo => todo.id === currentTodoId));
+               closeModal();
             }
          }
+      }
+
+      function deleteTodo() {
+         if ( confirm(`Do you want ot delete this todo?`) ) {
+            storage.removeTodo(currentTodoId);
+            printSidebarContent();
+            currentTodoId = null;
+            todoContainer.style.display = 'none';
+         }
+      }
+
+      function markTodo() {
+         let [ todo ] = storage.getTodos().filter(todo => todo.id === currentTodoId);
+         storage.editTodo(currentTodoId, { finished: !todo.finished });
+         printTodo(...storage.getTodos().filter(todo => todo.id === currentTodoId));
       }
 
       printSidebarContent();
@@ -254,7 +340,10 @@ export default function appendMarkup() {
       });
 
       modal.addEventListener('click', e => (e.target.id === 'modal' || e.target.id === 'cancel-button') ? closeModal() : null);
-      reminderBtn.addEventListener('click', toggleReminderContainer);
+      reminderBtn.addEventListener('click', () => toggleReminderContainer());
       modalForm.addEventListener('submit', handleSubmission);
+      markTodoBtn.addEventListener('click', markTodo);
+      editTodoBtn.addEventListener('click', () => openModal(null, 'edit'));
+      deleteTodoBtn.addEventListener('click', deleteTodo);
    });
 }

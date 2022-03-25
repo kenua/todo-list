@@ -64,7 +64,7 @@ const storage = (function() {
          if (priority === 'low' || 
              priority === 'medium' || 
              priority === 'high') todo.priority = priority;
-         if (!!finished || !(!!finished)) todo.finished = !!finished;
+         if (finished !== undefined && (!!finished || !(!!finished))) todo.finished = !!finished;
       }
    };
 

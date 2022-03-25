@@ -2,6 +2,8 @@
 @use '../custom' as * ;
 
 .todo {
+   display: none;
+
    &__top {
       display: flex;
       flex-direction: column;
