@@ -263,7 +263,7 @@ export default function appendMarkup() {
             // create new todo
             if (submissionType === 'new') {
                let { title, description, priority, reminder, day, month, year } = modalForm.elements;
-               let dueDate = (reminder.value === 'on') ? new Date(+year.value, +month.value, +day.value) : null;
+               let dueDate = (reminder.value === 'on') ? new Date(+year.value, +month.value - 1, +day.value) : null;
                let newTodo = new Todos(
                   sanitizeText(title.value),
                   sanitizeText(description.value),
@@ -280,7 +280,7 @@ export default function appendMarkup() {
             // edit todo
             if (submissionType === 'edit') {
                let { title, description, priority, reminder, day, month, year } = modalForm.elements;
-               let dueDate = (reminder.value === 'on') ? new Date(+year.value, +month.value, +day.value) : null;
+               let dueDate = (reminder.value === 'on') ? new Date(+year.value, +month.value - 1, +day.value) : null;
 
                storage.editTodo(currentTodoId, {
                   title: title.value,
