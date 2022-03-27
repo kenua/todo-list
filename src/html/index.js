@@ -333,6 +333,7 @@ export default function appendMarkup() {
          let [ todo ] = storage.getTodos().filter(todo => todo.id === currentTodoId);
          storage.editTodo(currentTodoId, { finished: !todo.finished });
          printTodo(...storage.getTodos().filter(todo => todo.id === currentTodoId));
+         printSidebarContent();   
       }
 
       printSidebarContent();
