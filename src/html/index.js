@@ -108,10 +108,27 @@ export default function appendMarkup() {
       }
 
       function printTodo(todoObj) {
+         let priorityColor = (todoObj.priority === 'low') ? 'blue' :
+                             (todoObj.priority === 'medium') ? 'yellow' : 
+                             (todoObj.priority === 'high') ? 'red' : 'dark';
+
          todoTitle.textContent = todoObj.title;
-         todoDuedate.textContent = (todoObj.dueDate) ? todoObj.dueDate.toDateString() : '';
+
+         if (todoObj.dueDate) {
+            todoDuedate.textContent = `${todoObj.dueDate.getDate()}/${todoObj.dueDate.getMonth()}/${todoObj.dueDate.getYear()}`;
+            todoDuedate.className = `todo__reminder text-${priorityColor}`;
+         } else {
+            todoDuedate.textContent = '';
+            todoDuedate.className = '';
+         }
+
          todoContent.textContent = todoObj.desc;
-         markSymbol.className = (todoObj.finished) ? 'fa-solid fa-circle' : 'fa-regular fa-circle';
+
+         if (todoObj.finished) {
+           markSymbol.className = `fa-solid fa-circle text-${priorityColor}`;
+         } else {
+            markSymbol.className = `fa-regular fa-circle text-${priorityColor}`;
+         }
       }
 
       function selectTodo(e) {
