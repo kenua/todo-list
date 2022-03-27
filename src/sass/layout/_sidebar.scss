@@ -2,17 +2,21 @@
 @use '../custom' as * ;
 
 .sidebar {
+   background-color: $primary;
+
    &__item {
       text-align: left;
+      font-family: 'Quicksand', sans-serif;
       background-color: #00000000;
-      padding: map.get($spacers, 2);
+      color: $white;
+      padding: .6rem .4rem;
       border: none;
       width: 100%;
       display: block;
 
       i {
          display: inline-block;
-         margin-right: map.get($spacers, 1);
+         margin-right: map.get($spacers, 2);
       }
    }
 
@@ -22,13 +26,15 @@
    }
 
    &__item--hover {
+      transition: background-color 250ms ease-in-out;
+
       &:hover {
-         background-color: $dark-gray;
+         background-color: $secondary;
       }
    }
 
    &__item--selected {
-      background-color: $dark-gray;
+      background-color: $secondary;
    }
 
    #sidebar-input-container {
@@ -44,24 +50,24 @@
 
    &__create-button {
       text-align: center;
-      border-top: 1px solid $dark-gray;
-      border-bottom: 1px solid $dark-gray;
+      border-top: 1px solid $secondary;
+      border-bottom: 1px solid $secondary;
    }
 
    &__button {
       background-color: #00000000;
-      color: $primary;
+      color: $white;
       width: 1.5rem;
       height: 1.5rem;
       padding: 0;
-      border-radius: 50%;
       border: none;
-      transition: background-color 250ms ease-in-out;
+      transition: opacity 250ms ease-in-out;
       vertical-align: middle;
       position: relative;
+      opacity: .5;
 
       &:hover {
-         background-color: $dark-gray;
+         opacity: 1;
       }
 
       i {
@@ -87,15 +93,15 @@
    }
 
    &__todos-list {
-      padding-left: map.get($spacers, 3);
+      //padding-left: map.get($spacers, 3);
    }
 
    &__anchor {
       text-decoration: none;
-      color: $dark;
+      padding-left: 2.5rem;
 
       &:hover {
-         color: inherit;
+         color: $white;
       }
    }
 
@@ -104,7 +110,7 @@
       height: 100%;
       overflow: auto;
       position: fixed;
-      top: map.get($spacers, 1);
+      top: 0;
       left: 0;
    }
 }

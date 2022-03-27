@@ -1,6 +1,6 @@
 @import "../../node_modules/bootstrap/scss/functions";
 // # COLORS
-$white:    #fff;
+$white:    #ECECEC;
 $gray-100: #f8f9fa;
 $gray-200: #e9ecef;
 $gray-300: #dee2e6;
@@ -24,13 +24,13 @@ $grays: (
   "900": $gray-900
 );
 
-$blue:    #0097e6;
+$blue:    #76BAE2;
 $indigo:  #6610f2;
 $purple:  #6f42c1;
 $pink:    #d63384;
-$red:     #dc3545;
+$red:     #E27689;
 $orange:  #fd7e14;
-$yellow:  #fbc531;
+$yellow:  #DBE276;
 $green:   #198754;
 $teal:    #20c997;
 $cyan:    #0dcaf0;
@@ -51,8 +51,9 @@ $colors: (
   "gray-dark":  $gray-800
 );
 
-$primary:       #ED4C67;
-$secondary:     #e63956;
+$primary:       #222629;
+$secondary:     #141618;
+$thirdly: #ECECEC;
 $success:       $green;
 $info:          $cyan;
 $warning:       $yellow;

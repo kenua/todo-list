@@ -1,10 +1,10 @@
 export default function appendSidebar() {
    const sidebar = document.createElement('section');
 
-   sidebar.className = 'sidebar container-fluid p-0 pb-5 bg-gray';
+   sidebar.className = 'sidebar container-fluid p-0 pb-5';
    sidebar.id = 'sidebar';
    sidebar.innerHTML = `
-   <button type="button" id="new-folder-button" class="sidebar__item sidebar__item--hover border-bottom border-dark-gray">
+   <button type="button" id="new-folder-button" class="sidebar__item sidebar__item--hover border-bottom border-secondary">
       <i class="fa-solid fa-folder-plus"></i>
       new folder
    </button>
@@ -12,7 +12,7 @@ export default function appendSidebar() {
    <form id="sidebar-input-container">
       <div class="sidebar__item d-flex align-items-center">
          <i class="fa-solid fa-folder-plus"></i>
-         <input type="text" name="folder-name" class="sidebar__input sidebar__item--hover" placeholder="Folder name">
+         <input type="text" name="folder-name" class="sidebar__input sidebar__item--hover text-white" placeholder="Folder name">
       </div>
       <button type="submit" class="sidebar__create-button sidebar__item sidebar__item--hover">Create</button>
    </form>

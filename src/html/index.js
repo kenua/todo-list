@@ -35,6 +35,7 @@ export default function appendMarkup() {
       let submissionType = null;
       let newTodoFolder = null;
       let currentTodoId = null;
+      let selectedAnchor = null;
 
       function createTodoItems(folder) {
          let result = [];
@@ -46,9 +47,11 @@ export default function appendMarkup() {
                let priorityColor = (todo.priority === 'low') ? 'blue' :
                                 (todo.priority === 'medium') ? 'yellow' : 
                                 (todo.priority === 'high') ? 'red' : 'dark';
+               let circle = (todo.finished) ? 'fa-solid fa-circle' : 'fa-regular fa-circle';
 
                content = content.replace(/\[ID\]/g, todo.id);
                content = content.replace(/\[TITLE\]/g, todo.title);
+               content = content.replace(/\[CIRCLE\]/g, circle);
                content = content.replace(/\[PRIORITY-COLOR\]/g, priorityColor);
                li.innerHTML = content;
                result.push(li);
@@ -118,7 +121,9 @@ export default function appendMarkup() {
 
          if (anchor) {
             let [ todo ] = storage.getTodos().filter(todo => todo.id === anchor.getAttribute('href'));
-            anchor.classList.add('modal__item--selected');
+            if (selectedAnchor) selectedAnchor.classList.remove('sidebar__item--selected');
+            anchor.classList.add('sidebar__item--selected');
+            selectedAnchor = anchor;
             todoContainer.style.display = 'block';
             currentTodoId = todo.id;
             printTodo(todo);
