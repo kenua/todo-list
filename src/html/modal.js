@@ -5,29 +5,35 @@ export default function appendModal() {
    modal.className = 'modal modal--hidden';
    modal.innerHTML = `
    <form id="modal-form" class="modal__form" novalidate>
-      <h1 id="modal__title" class="fs-2 fw-bold text-capitalize text-center mb-5"></h1>
-      <div class="mb-5">
+      <h1 id="modal__title" class="fs-3 fw-bold text-capitalize text-center mb-5"></h1>
+      <div class="mb-4">
          <label for="title" class="modal__label">Title</label>
          <input type="text" name="title" id="title" class="modal__input" placeholder="Take out trash">
-         <p class="modal__error-msg">Title is required and it shouldn't be greater than 50 characters long!</p>
+         <p class="modal__error-msg">
+            <i class="fa-solid fa-circle-exclamation"></i> 
+            This field is require and it must be less than 50 characters long!
+         </p>
       </div>
 
-      <div class="mb-5">
+      <div class="mb-4">
          <label for="description" class="modal__label">Description</label>
          <textarea type="text" name="description" id="description" class="modal__input modal__textarea"></textarea>
-         <p class="modal__error-msg">Description is required and it shouldn't be greater than 500 characters long!</p>
+         <p class="modal__error-msg">
+            <i class="fa-solid fa-circle-exclamation"></i> 
+            This field is require and it must be less than 500 characters long!
+         </p>
       </div>
 
-      <div class="mb-5">
-         <label for="priority" class="modal__label">Priority: </label>
-         <select name="priority" id="priority">
+      <div class="mb-4">
+         <label for="priority" class="modal__label me-2">Priority: </label>
+         <select name="priority" id="priority" class="modal__input modal__priority">
             <option value="low">Low</option>
             <option value="medium">Medium</option>
             <option value="high">High</option>
       </select>
       </div>
 
-      <div class="mb-5">
+      <div class="mb-4">
          <p class="modal__label">
             Reminder: 
             <button 
@@ -35,7 +41,7 @@ export default function appendModal() {
                name="reminder" 
                value="off"
                id="reminder-button" 
-               class="modal__button fs-6" 
+               class="modal__button fs-6 ms-2" 
                >
             OFF</button>
          </p>
@@ -56,7 +62,10 @@ export default function appendModal() {
                   <input type="number" name="year" id="year" class="modal__input" max="99999" min="1970" placeholder="YY">
                </div>
             </div>
-            <p class="modal__error-msg mt-2">Couldn't understand you date format, try again...</p>
+            <p class="modal__error-msg">
+               <i class="fa-solid fa-circle-exclamation"></i> 
+               Day, Month, and Year are required and must be positive numbers!
+            </p>
          </div>
       </div>
 
