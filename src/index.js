@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
       todoTitle.textContent = todoObj.title;
 
       if (todoObj.reminder) {
-         todoReminder.textContent = `${todoObj.reminder.getDate()}/${todoObj.reminder.getMonth()}/${todoObj.reminder.getYear()}`;
+         todoReminder.textContent = `${todoObj.reminder.getDate()}/${todoObj.reminder.getMonth() + 1}/${todoObj.reminder.getFullYear()}`;
          todoReminder.className = `todo__reminder text-${priorityColor}`;
       } else {
          todoReminder.textContent = '';
