@@ -7,7 +7,7 @@ export default function appendTodo() {
    <div class="pb-5 border-bottom border-primary mb-5">
       <ul class="list-unstyled d-flex align-items-center m-0 pb-3">
          <li class="me-auto">
-            <span id="todo-dueDate"></span>
+            <span id="todo-reminder"></span>
          </li>
          <li class="me-2">
             <button id="edit-todo" class="options__button" title="Edit todo">
@@ -21,8 +21,8 @@ export default function appendTodo() {
          </li>
       </ul>
       <h1 class="fs-1 fw-bold">
-         <button id="mark-todo" class="options__button options__button--check" title="Mark todo">
-            <i id="mark-symbol" class=""></i>
+         <button id="checkmark" class="options__button options__button--check" title="Mark todo">
+            <i id="checkmark-symbol" class=""></i>
          </button>
          <span id="todo-title"></span>
       </h1>
@@ -32,7 +32,7 @@ export default function appendTodo() {
    <div class="todo__top">
       <h1 class="todo__title text-center mb-4 mb-lg-0">
          <span id="todo-title" class="fs-1 fw-bold text-capitalize"></span>
-         <span id="todo-dueDate" class="fs-4 fw-light text-uppercase"></span>
+         <span id="todo-reminder" class="fs-4 fw-light text-uppercase"></span>
       </h1>
 
       <ul class="list-unstyled todo__options  d-flex align-items-center m-0">

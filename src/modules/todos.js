@@ -2,7 +2,7 @@
 
 import sanitizeText from '../utils/sanitizeText.js';
 
-function Todos(title = '', desc = '', dueDate = null, priority = 'low', finished = false) {
+function Todos(title = '', desc = '', reminder = null, priority = 'low', finished = false) {
    title = sanitizeText(title);
    desc = sanitizeText(desc);
 
@@ -12,8 +12,8 @@ function Todos(title = '', desc = '', dueDate = null, priority = 'low', finished
    if (desc.length > 0 && desc.length <= 500) this.desc = desc;
    else throw new Error('desc must be a string with a maximum length of 500 characters');
 
-   if ((dueDate instanceof Date)) this.dueDate = dueDate;
-   else this.dueDate = null;
+   if ((reminder instanceof Date)) this.reminder = reminder;
+   else this.reminder = null;
 
    switch (priority) {
       case 'low':

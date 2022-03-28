@@ -9,7 +9,7 @@ export default function appendSidebar() {
       new folder
    </button>
 
-   <form id="sidebar-input-container">
+   <form id="new-folder-form">
       <div class="sidebar__item d-flex align-items-center">
          <i class="fa-solid fa-folder-plus"></i>
          <input type="text" name="folder-name" class="sidebar__input sidebar__item--hover text-white" placeholder="Folder name">

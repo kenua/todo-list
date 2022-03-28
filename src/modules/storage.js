@@ -55,12 +55,12 @@ const storage = (function() {
 
    const editTodo = function(id, opt) {
       if (opt instanceof Object) {
-         let { title, desc, dueDate, priority, finished } = opt;
+         let { title, desc, reminder, priority, finished } = opt;
          let [ todo ] = _todos.filter(todo => todo.id === id);
    
          if (title) todo.title = sanitizeText(title);
          if (desc) todo.desc = sanitizeText(desc);
-         if (dueDate instanceof Date || dueDate === null) todo.dueDate = dueDate;
+         if (reminder instanceof Date || reminder === null) todo.reminder = reminder;
          if (priority === 'low' || 
              priority === 'medium' || 
              priority === 'high') todo.priority = priority;

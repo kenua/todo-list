@@ -37,7 +37,7 @@
       background-color: $secondary;
    }
 
-   #sidebar-input-container {
+   #new-folder-form {
       display: none;
    }
 
@@ -90,10 +90,6 @@
       height: 1.2rem;
       border: 1px solid $primary;
       margin-right: .2rem;
-   }
-
-   &__todos-list {
-      //padding-left: map.get($spacers, 3);
    }
 
    &__anchor {
