@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
    let submissionType = null;
    let newTodoFolder = null;
    let currentTodoId = null;
-   let selectedAnchor = null;
+   let selectedTodo = null;
 
    function createTodoItems(folder) {
       let result = [];
@@ -104,9 +104,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (anchor) {
          let [ todo ] = storage.getTodos().filter(todo => todo.id === anchor.getAttribute('href'));
-         if (selectedAnchor) selectedAnchor.classList.remove('sidebar__item--selected');
+         if (selectedTodo) selectedTodo.classList.remove('sidebar__item--selected');
          anchor.classList.add('sidebar__item--selected');
-         selectedAnchor = anchor;
+         selectedTodo = anchor;
          todoContainer.style.display = 'block';
          currentTodoId = todo.id;
          printTodo(todo);
@@ -334,9 +334,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
    function checkTodo() {
       let [ todo ] = storage.getTodos().filter(todo => todo.id === currentTodoId);
+      let priorityColor = (todo.priority === 'low') ? 'blue' :
+                          (todo.priority === 'medium') ? 'yellow' : 
+                          (todo.priority === 'high') ? 'red' : 'dark';
+
       storage.editTodo(currentTodoId, { finished: !todo.finished });
       printTodo(...storage.getTodos().filter(todo => todo.id === currentTodoId));
-      printSidebarContent();   
+
+      let circle = (!todo.finished) ? 'fa-solid fa-circle' : 'fa-regular fa-circle';
+      selectedTodo.firstElementChild.firstElementChild.className = `${circle} text-${priorityColor}`;
    }
 
    function deleteTodo() {
