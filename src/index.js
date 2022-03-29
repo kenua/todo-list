@@ -8,7 +8,9 @@ import appendTodo from './html/todo.js';
 import todoFolderButton from './html/markup/todoFolderButton.html';
 import customFolderButton from './html/markup/customFolderButton.html';
 import todoItemButton from './html/markup/todoItemButton.html';
-import './test/todoSamples.js';
+import saveStorageData from './utils/saveStorageData.js';
+import pullStorageData from './utils/pullStorageData.js';
+import createGenericTodo from './utils/createGenericTodo.js';
 
 document.addEventListener('DOMContentLoaded', () => {
    appendModal();
@@ -73,6 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if ( confirm(`Do you want to delete "${folder}" folder?`) ) {
          storage.removeFolder(folder);
          printSidebarContent();
+         saveStorageData();
       }
    }
 
@@ -222,6 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
          newFolderForm.style.display = 'none';
          input.value = '';
          printSidebarContent();
+         saveStorageData();
       } catch (e) {
          alert('Your folder name is invalid or a duplicate');
       }
@@ -312,6 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
             storage.addTodo(newTodo, newTodoFolder);
             printSidebarContent();
             closeModal();
+            saveStorageData();
          }
          // edit todo
          if (submissionType === 'edit') {
@@ -328,6 +333,7 @@ document.addEventListener('DOMContentLoaded', () => {
             printSidebarContent();
             printTodo(...storage.getTodos().filter(todo => todo.id === currentTodoId));
             closeModal();
+            saveStorageData();
          }
       }
    }
@@ -343,18 +349,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
       let circle = (!todo.finished) ? 'fa-solid fa-circle' : 'fa-regular fa-circle';
       selectedTodo.firstElementChild.firstElementChild.className = `${circle} text-${priorityColor}`;
+      saveStorageData();
    }
 
    function deleteTodo() {
       if ( confirm(`Do you want ot delete this todo?`) ) {
          storage.removeTodo(currentTodoId);
+         saveStorageData();
          printSidebarContent();
          currentTodoId = null;
          todoContainer.style.display = 'none';
       }
    }
 
-   printSidebarContent();
+   // print todos and/or folders from localStorage
+   if (JSON.parse(localStorage.todos).length > 0 || 
+       JSON.parse(localStorage.folders).length > 0) {
+      pullStorageData();
+      printSidebarContent();
+   } else {
+      createGenericTodo();
+      printSidebarContent();
+   }
 
    newFolderBtn.addEventListener('click', () => {
       newFolderBtn.style.display = 'none';
