@@ -363,8 +363,8 @@ document.addEventListener('DOMContentLoaded', () => {
    }
 
    // print todos and/or folders from localStorage
-   if (JSON.parse(localStorage.todos).length > 0 || 
-       JSON.parse(localStorage.folders).length > 0) {
+   if (localStorage.todos && JSON.parse(localStorage.todos).length > 0 || 
+       localStorage.folders && JSON.parse(localStorage.folders).length > 0) {
       pullStorageData();
       printSidebarContent();
    } else {

@@ -4,7 +4,7 @@
   "description": "A todo list app",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --config ./webpack.config.js",
+    "build": "webpack --config ./webpack.config.js --mode=production",
     "watch": "webpack --watch",
     "start": "webpack serve --config ./webpack.config.js"
   },
