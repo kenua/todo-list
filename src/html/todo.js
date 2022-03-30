@@ -10,18 +10,18 @@ export default function appendTodo() {
             <span id="todo-reminder"></span>
          </li>
          <li class="me-2">
-            <button id="edit-todo" class="options__button" title="Edit todo">
+            <button id="edit-todo" class="todo__button" title="Edit todo">
                <i class="fa-solid fa-pen-to-square"></i>
             </button>
          </li>
          <li>
-            <button id="delete-todo" class="options__button" title="Delete todo">
+            <button id="delete-todo" class="todo__button" title="Delete todo">
                <i class="fa-solid fa-trash-can"></i></i>
             </button>
          </li>
       </ul>
-      <h1 class="fs-1 fw-bold">
-         <button id="checkmark" class="options__button options__button--check" title="Mark todo">
+      <h1 class="fs-1 fw-bold m-0">
+         <button id="checkmark" class="todo__button todo__button--checkmark" title="Check todo">
             <i id="checkmark-symbol" class=""></i>
          </button>
          <span id="todo-title"></span>

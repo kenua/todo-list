@@ -273,7 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else titleField.nextElementSibling.classList.remove('modal__error-msg--show');
 
       if (sanitizeText(descField.value).length === 0 || 
-          sanitizeText(descField.value).length > 50) {
+          sanitizeText(descField.value).length > 500) {
          descField.nextElementSibling.classList.add('modal__error-msg--show');
          submitForm = false;
       } else descField.nextElementSibling.classList.remove('modal__error-msg--show');

@@ -10,7 +10,7 @@
       border-radius: 6px;
    }
 
-   .options__button {
+   &__button {
       background-color: #00000000;
       color: $primary;
       font-size: map.get($font-sizes, 4);
@@ -23,7 +23,7 @@
       }
    }
 
-   .options__button--check {
+   &__button--checkmark {
       font-size: map.get($font-sizes, 1);
    }
 
