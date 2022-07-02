@@ -8,10 +8,10 @@ export default function appendModal() {
       <h1 id="modal__title" class="fs-3 fw-bold text-capitalize text-center mb-5"></h1>
       <div class="mb-4">
          <label for="title" class="modal__label">Title</label>
-         <input type="text" name="title" id="title" class="modal__input" placeholder="Take out trash">
+         <input type="text" name="title" id="title" class="modal__input">
          <p class="modal__error-msg">
             <i class="fa-solid fa-circle-exclamation"></i> 
-            This field is require and it must be less than 50 characters long!
+            This field is required, it should be less than 50 characters long
          </p>
       </div>
 
@@ -20,7 +20,7 @@ export default function appendModal() {
          <textarea type="text" name="description" id="description" class="modal__input modal__textarea"></textarea>
          <p class="modal__error-msg">
             <i class="fa-solid fa-circle-exclamation"></i> 
-            This field is require and it must be less than 500 characters long!
+            This field is required, it must be less than 500 characters long
          </p>
       </div>
 
@@ -64,7 +64,7 @@ export default function appendModal() {
             </div>
             <p class="modal__error-msg">
                <i class="fa-solid fa-circle-exclamation"></i> 
-               Day, Month, and Year are required and must be positive numbers!
+               Day, Month, and Year are required
             </p>
          </div>
       </div>
