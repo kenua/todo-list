@@ -1,8 +1,9 @@
 'use strict';
 
+import uniqid from 'uniqid';
 import sanitizeText from '../utils/sanitizeText.js';
 
-function Todos(title = '', desc = '', reminder = null, priority = 'low', finished = false) {
+function Todos(title = '', desc = '', checklist = [], reminder = null, priority = 'low') {
    title = sanitizeText(title);
    desc = sanitizeText(desc);
 
@@ -25,8 +26,38 @@ function Todos(title = '', desc = '', reminder = null, priority = 'low', finishe
          throw new Error('priority is not valid');
    }
 
-   if (!!finished || !(!!finished)) this.finished = !!finished;
-   else throw new Error('finished is not valid');
+   if (checklist instanceof Array) {
+      for (let i = 0; i < checklist.length; i++) {
+         let checklistObj = {
+            id: uniqid(),
+            taskName: checklist[i],
+            finished: false,
+         };
+
+         checklist[i] = checklistObj;
+      }
+      this.checklist = checklist;
+   } else {
+      throw new Error('checklist must be an array');
+   }
+}
+
+Todos.prototype.check = function(id = '') {
+   if (!(id instanceof String) && id.length === 0) {
+      throw new Error("id must be an string and it shouldn't be empty");
+   }
+
+   let result;
+
+   this.checklist = this.checklist.map(item => {
+      if (id === item.id) {
+         item.finished = !item.finished;
+         result = item;
+      }
+      return item;
+   });
+
+   return result;
 }
 
 export default Todos;

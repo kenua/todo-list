@@ -35,7 +35,20 @@ const storage = (function() {
    const getTodos = function() {
       let todosCopy = [];
 
-      _todos.forEach(todo => todosCopy.push( Object.assign({}, todo) ));
+      _todos.forEach(todo => {
+         let { id, title, desc, priority, folder } = todo;
+         let copy = { id, title, desc, priority, folder, reminder: null, checklist: [] };
+
+         if (todo.reminder) copy.reminder = new Date(todo.reminder);
+
+         for (let i = 0; i < todo.checklist.length; i++) {
+            let checklistItemCopy = {...todo.checklist[i]};
+            copy.checklist.push(checklistItemCopy);
+         }
+
+         todosCopy.push(copy);
+      });
+
       return todosCopy;
    };
 
@@ -55,7 +68,7 @@ const storage = (function() {
 
    const editTodo = function(id, opt) {
       if (opt instanceof Object) {
-         let { title, desc, reminder, priority, finished } = opt;
+         let { title, desc, checklist, reminder, priority } = opt;
          let [ todo ] = _todos.filter(todo => todo.id === id);
    
          if (title) todo.title = sanitizeText(title);
@@ -64,7 +77,9 @@ const storage = (function() {
          if (priority === 'low' || 
              priority === 'medium' || 
              priority === 'high') todo.priority = priority;
-         if (finished !== undefined && (!!finished || !(!!finished))) todo.finished = !!finished;
+         if (checklist && checklist.length > 0) {
+            todo.checklist = checklist;
+         }
       }
    };
 
