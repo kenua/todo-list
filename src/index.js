@@ -135,6 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
          submissionType = 'edit';
          modal.classList.remove('modal--hidden');
+         modal.classList.add('modal--edit');
          modalTitle.textContent = `Edit Todo`;
          titleField.value = todo.title;
          descField.value = todo.desc;
@@ -164,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
       todoFolder.innerHTML = todoFolderButton;
 
       createBtn.type = 'button';
-      createBtn.className = 'sidebar__button';
+      createBtn.className = 'sign-button';
       createBtn.title = "Add new todo";
       createBtn.innerHTML = '<i class="fa-solid fa-plus"></i>';
       createBtn.addEventListener('click', openModal.bind(null, 'todos', 'new'));
@@ -188,13 +189,13 @@ document.addEventListener('DOMContentLoaded', () => {
          folderButton.innerHTML = customFolderButton.replace(/\[FOLDER\]/g, folder);
 
          deleteBtn.type = 'button';
-         deleteBtn.className = 'sidebar__button';
+         deleteBtn.className = 'sign-button';
          deleteBtn.title = "Delete folder";
          deleteBtn.innerHTML = '<i class="fa-solid fa-minus"></i>';
          deleteBtn.addEventListener('click', () => deleteFolder(folder));
 
          createBtn.type = 'button';
-         createBtn.className = 'sidebar__button';
+         createBtn.className = 'sign-button';
          createBtn.title = "Add new todo";
          createBtn.innerHTML = '<i class="fa-solid fa-plus"></i>';
          createBtn.addEventListener('click', () => openModal(folder, 'new'));
@@ -248,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
    }
 
    function closeModal() {
-      modal.classList.add('modal--hidden');
+      modal.className = 'modal modal--hidden'; 
       // reset fields value of modal
       titleField.value = '';
       descField.value = '';

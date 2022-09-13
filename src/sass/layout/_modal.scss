@@ -56,6 +56,33 @@
       }
    }
 
+   &__checklist-container {
+      margin: 0;
+      padding: 0;
+   }
+
+   &__checklist-item {
+      background-color: $secondary;
+      padding: 0.5rem;
+      border-radius: 6px;
+      margin: 1rem 1rem 0 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+   }
+
+   .checklist__name {
+      margin: 0;
+   }
+
+   .checklist__checkbox {
+      display: none;
+   }
+
+   input[type="checkbox"] {
+      vertical-align: middle;
+   }
+
    &__error-msg--show {
       display: block;
    }
@@ -108,4 +135,10 @@
 
 .modal--hidden {
    display: none;
+}
+
+.modal--edit {
+   .checklist__checkbox {
+      display: inline-block;;
+   }
 }

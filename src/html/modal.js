@@ -25,6 +25,42 @@ export default function appendModal() {
       </div>
 
       <div class="mb-4">
+         <label for="checklist" class="modal__label">Checklist</label>
+         <div class="d-flex">
+            <input 
+               type="text" 
+               name="checklist-name" 
+               id="checklist" class="modal__input me-3" 
+               placeholder="Take out trash"
+            >
+            <button type="button" id="checklist-add-button" class="modal__button">Add</button>
+         </div>
+         <p class="modal__error-msg">
+            <i class="fa-solid fa-circle-exclamation"></i> 
+            This field is required, it must be less than 250 characters long
+         </p>
+
+         <ul id="checklist-container" class="modal__checklist-container">
+            <li class="modal__checklist-item">
+               <p class="checklist__name">Take out trash</p>
+
+               <div class="checklist__buttons">
+                  <label class="checklist__checkbox">
+                     Finished: <input type="checkbox" id="check-task">
+                  </label> 
+                  <button 
+                     type="button" 
+                     id="delete-task" 
+                     class="sign-button sign-button--circle sign-button--red ms-2" 
+                     title="Delete Task">
+                     <i class="fa-solid fa-minus"></i>
+                  </button>
+               </div>
+            </li>
+         </ul>
+      </div>
+
+      <div class="mb-4">
          <label for="priority" class="modal__label me-2">Priority: </label>
          <select name="priority" id="priority" class="modal__input modal__priority">
             <option value="low">Low</option>

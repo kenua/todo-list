@@ -54,30 +54,6 @@
       border-bottom: 1px solid $secondary;
    }
 
-   &__button {
-      background-color: #00000000;
-      color: $white;
-      width: 1.5rem;
-      height: 1.5rem;
-      padding: 0;
-      border: none;
-      transition: opacity 250ms ease-in-out;
-      vertical-align: middle;
-      position: relative;
-      opacity: .5;
-
-      &:hover {
-         opacity: 1;
-      }
-
-      i {
-         position: absolute;
-         top: 50%;
-         left: 50%;
-         transform: translate(-50%, -50%);
-      }
-   }
-
    &__button-container {
       min-width: 60px;
       display: flex;
