@@ -40,24 +40,7 @@ export default function appendModal() {
             This field is required, it must be less than 250 characters long
          </p>
 
-         <ul id="checklist-container" class="modal__checklist-container">
-            <li class="modal__checklist-item">
-               <p class="checklist__name">Take out trash</p>
-
-               <div class="checklist__buttons">
-                  <label class="checklist__checkbox">
-                     Finished: <input type="checkbox" id="check-task">
-                  </label> 
-                  <button 
-                     type="button" 
-                     id="delete-task" 
-                     class="sign-button sign-button--circle sign-button--red ms-2" 
-                     title="Delete Task">
-                     <i class="fa-solid fa-minus"></i>
-                  </button>
-               </div>
-            </li>
-         </ul>
+         <ul id="checklist-container" class="modal__checklist-container"></ul>
       </div>
 
       <div class="mb-4">

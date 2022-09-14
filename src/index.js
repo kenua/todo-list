@@ -1,4 +1,5 @@
 import './sass/styles.scss';
+import uniqid from 'uniqid';
 import storage from './modules/storage.js';
 import Todos from './modules/todos.js';
 import sanitizeText from './utils/sanitizeText.js';
@@ -8,6 +9,7 @@ import appendTodo from './html/todo.js';
 import todoFolderButton from './html/markup/todoFolderButton.html';
 import customFolderButton from './html/markup/customFolderButton.html';
 import todoItemButton from './html/markup/todoItemButton.html';
+import modalTaskItem from './html/markup/modalTaskItem.html';
 import saveStorageData from './utils/saveStorageData.js';
 import pullStorageData from './utils/pullStorageData.js';
 import createGenericTodo from './utils/createGenericTodo.js';
@@ -25,12 +27,15 @@ document.addEventListener('DOMContentLoaded', () => {
    const { 
       title: titleField, 
       description: descField, 
+      'checklist-name': checklistNameField,
       priority: priorityField,
       day: dayField, 
       month: monthField, 
       year: yearField,
    } = modalForm.elements;
    const modalTitle = document.querySelector('#modal__title');
+   const modalChecklistContainer = document.querySelector('#checklist-container');
+   const modalAddTaskBtn = document.querySelector('#checklist-add-button');
    const reminderBtn = document.querySelector('#reminder-button');
    const reminderContainer = document.querySelector('#reminder-container');
    const modalErrorMsg = document.querySelectorAll('.modal__error-msg');
@@ -46,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
    let newTodoFolder = null;
    let currentTodoId = null;
    let selectedTodo = null;
+   let checklistItems = [];
 
    function createTodoItems(folder) {
       let result = [];
@@ -139,6 +145,8 @@ document.addEventListener('DOMContentLoaded', () => {
          modalTitle.textContent = `Edit Todo`;
          titleField.value = todo.title;
          descField.value = todo.desc;
+         checklistItems = todo.checklist;
+         printChecklistItems();
          priorityField.value = todo.priority;
 
          if (todo.reminder) {
@@ -253,6 +261,9 @@ document.addEventListener('DOMContentLoaded', () => {
       // reset fields value of modal
       titleField.value = '';
       descField.value = '';
+      checklistNameField.value = '';
+      modalChecklistContainer.innerHTML = '';
+      checklistItems = [];
       priorityField.value = 'low';
       reminderBtn.value = 'off';
       reminderBtn.textContent = 'OFF';
@@ -309,15 +320,16 @@ document.addEventListener('DOMContentLoaded', () => {
             let newTodo = new Todos(
                sanitizeText(titleField.value),
                sanitizeText(descField.value),
+               checklistItems.map(item => item.taskName),
                reminder,
                priorityField.value,
-               false
             );
 
             storage.addTodo(newTodo, newTodoFolder);
             printSidebarContent();
             closeModal();
             saveStorageData();
+            checklistItems = [];
          }
          // edit todo
          if (submissionType === 'edit') {
@@ -328,9 +340,11 @@ document.addEventListener('DOMContentLoaded', () => {
             storage.editTodo(currentTodoId, {
                title: sanitizeText(titleField.value),
                desc: sanitizeText(descField.value),
+               checklist: checklistItems,
                priority: priorityField.value,
                reminder,
             });
+            checklistItems = [];
             printSidebarContent();
             printTodo(...storage.getTodos().filter(todo => todo.id === currentTodoId));
             closeModal();
@@ -363,6 +377,63 @@ document.addEventListener('DOMContentLoaded', () => {
       }
    }
 
+   function printChecklistItems() {
+      modalChecklistContainer.innerHTML = '';
+      checklistItems.forEach(item => {
+         const taskItem = document.createElement('li');
+         let content = modalTaskItem;
+         let checkedAttribute = (item.finished) ? 'checked' : '';
+
+         content = content.replace(/\[TASKNAME\]/g, item.taskName);
+         content = content.replace(/\[CHECKED\]/g, checkedAttribute);
+         content = content.replace(/\[ID\]/g, item.id);
+         taskItem.className = 'modal__checklist-item';
+         taskItem.innerHTML = content;
+         modalChecklistContainer.appendChild(taskItem);
+      });
+   }
+
+   function addChecklistItem() {
+      let taskName = sanitizeText(checklistNameField.value);
+
+      if (taskName.length > 0) {
+         checklistItems.push({
+            id: uniqid(),
+            taskName: taskName,
+            finished: false,
+         });
+         printChecklistItems();
+         checklistNameField.value = '';
+         checklistNameField.focus();
+      }
+   }
+
+   function handlechecklistButtons(e) {
+      let target = e.target;
+
+      // check or uncheck task
+      if (target.type && target.type === 'checkbox') {
+         let id = target.dataset.id;
+
+         checklistItems = checklistItems.map(task => {
+            if (task.id === id) {
+               task.finished = !task.finished;
+            }
+
+            return task;
+         });
+      
+      // remove task
+      } else {
+         let button = e.target.closest('button.sign-button');
+         
+         if (button && button.dataset.id) {
+            checklistItems = checklistItems.filter(item => item.id !== button.dataset.id);
+            printChecklistItems();
+         }
+      }
+   }
+
    // print todos and/or folders from localStorage
    if (localStorage.todos && JSON.parse(localStorage.todos).length > 0 || 
        localStorage.folders && JSON.parse(localStorage.folders).length > 0) {
@@ -381,6 +452,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
    newFolderForm.addEventListener('submit', createNewFolder);
    modal.addEventListener('mousedown', e => (e.target.id === 'modal' || e.target.id === 'cancel-button') ? closeModal() : null);
+   modalAddTaskBtn.addEventListener('click', addChecklistItem);
+   modalChecklistContainer.addEventListener('click', handlechecklistButtons);
    reminderBtn.addEventListener('click', () => toggleReminderContainer());
    modalForm.addEventListener('submit', handleSubmission);
    checkmarkBtn.addEventListener('click', checkTodo);

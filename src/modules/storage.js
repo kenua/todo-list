@@ -83,6 +83,12 @@ const storage = (function() {
       }
    };
 
+   const checkTask = function(todoId, checklistItemId) {
+      let [ todo ] = _todos.filter(item => item.id === todoId);
+
+      if (todo) todo.check(checklistItemId);
+   };
+
    return {
       getFolders,
       addFolder,
@@ -91,6 +97,7 @@ const storage = (function() {
       addTodo,
       removeTodo,
       editTodo,
+      checkTask,
    };
 })();
 
