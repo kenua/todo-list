@@ -4,7 +4,7 @@ export default function appendTodo() {
    todo.className = 'todo container-fuild p-3 p-lg-6';
    todo.id = 'todo';
    todo.innerHTML = `
-   <div class="pb-5 border-bottom border-primary mb-5">
+   <div class="pb-5 border-bottom border-gray mb-3">
       <ul class="list-unstyled d-flex align-items-center m-0 pb-3">
          <li class="me-auto">
             <span id="todo-reminder"></span>
@@ -28,7 +28,9 @@ export default function appendTodo() {
       </h1>
    </div>
    
-   <div id="todo-content"></div>
+   <p id="todo-desc" class="mb-5"></p>
+   <h2 id="checklist-heading" class="fs-3 fw-bold mb-3 pb-3 border-bottom border-gray">Checklist:</h2>
+   <ul id="todo-checklist" class="list-unstyled ps-5"></ul>
    `;
    document.querySelector('#content').append(todo);
 }

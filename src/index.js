@@ -6,6 +6,7 @@ import sanitizeText from './utils/sanitizeText.js';
 import appendModal from './html/modal.js';
 import appendSidebar from './html/sidebar.js';
 import appendTodo from './html/todo.js';
+import todoTaskItem from './html/markup/todoTaskItem.html';
 import todoFolderButton from './html/markup/todoFolderButton.html';
 import customFolderButton from './html/markup/customFolderButton.html';
 import todoItemButton from './html/markup/todoItemButton.html';
@@ -42,7 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
    const todoContainer = document.querySelector('#todo');
    const todoTitle = document.querySelector('#todo-title');
    const todoReminder = document.querySelector('#todo-reminder');
-   const todoContent = document.querySelector('#todo-content');
+   const todoDesc = document.querySelector('#todo-desc');
+   const todoChecklistHeading = document.querySelector('#checklist-heading');
+   const todoChecklist = document.querySelector('#todo-checklist');
    const checkmarkBtn = document.querySelector('#checkmark');
    const checkmarkSymbol = document.querySelector('#checkmark-symbol');
    const editTodoBtn = document.querySelector('#edit-todo');
@@ -100,7 +103,26 @@ document.addEventListener('DOMContentLoaded', () => {
          todoReminder.className = '';
       }
 
-      todoContent.textContent = todoObj.desc;
+      todoDesc.textContent = todoObj.desc;
+
+      if (todoObj.checklist.length > 0) {
+         let checklistContent = '';
+
+         todoObj.checklist.forEach(task => {
+            let taskLi = todoTaskItem;
+   
+            taskLi = taskLi.replace(/\[TODOID\]/g, todoObj.id);
+            taskLi = taskLi.replace(/\[TASKID\]/g, task.id);
+            taskLi = taskLi.replace(/\[CHECKED\]/g, (task.finished) ? 'checked' : '');
+            taskLi = taskLi.replace(/\[TASKNAME\]/g, task.taskName);
+            checklistContent += taskLi;
+         });
+         todoChecklist.innerHTML = checklistContent;
+         todoChecklistHeading.style.display = 'block';
+      } else {
+         todoChecklist.innerHTML = '';
+         todoChecklistHeading.style.display = 'none';
+      }
 
       if (todoObj.finished) checkmarkSymbol.className = `fa-solid fa-circle text-${priorityColor}`;
       else checkmarkSymbol.className = `fa-regular fa-circle text-${priorityColor}`;
@@ -434,6 +456,17 @@ document.addEventListener('DOMContentLoaded', () => {
       }
    }
 
+   function checkTask(e) {
+      let target = e.target;
+
+      if (target.type && target.type === 'checkbox') {
+         let { todoId, taskId } = target.dataset;
+
+         storage.checkTask(todoId, taskId);
+         saveStorageData();
+      }
+   }
+
    // print todos and/or folders from localStorage
    if (localStorage.todos && JSON.parse(localStorage.todos).length > 0 || 
        localStorage.folders && JSON.parse(localStorage.folders).length > 0) {
@@ -454,6 +487,7 @@ document.addEventListener('DOMContentLoaded', () => {
    modal.addEventListener('mousedown', e => (e.target.id === 'modal' || e.target.id === 'cancel-button') ? closeModal() : null);
    modalAddTaskBtn.addEventListener('click', addChecklistItem);
    modalChecklistContainer.addEventListener('click', handlechecklistButtons);
+   todoChecklist.addEventListener('click', checkTask);
    reminderBtn.addEventListener('click', () => toggleReminderContainer());
    modalForm.addEventListener('submit', handleSubmission);
    checkmarkBtn.addEventListener('click', checkTodo);

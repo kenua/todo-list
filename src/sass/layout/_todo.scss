@@ -27,6 +27,11 @@
       font-size: map.get($font-sizes, 1);
    }
 
+   .checklist__checkbox {
+      width: 20px;
+      height: 20px;
+   }
+
    @include media-breakpoint-up(lg) {
       width: 70%;
       height: 100vh;
