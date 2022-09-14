@@ -46,7 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
    const todoDesc = document.querySelector('#todo-desc');
    const todoChecklistHeading = document.querySelector('#checklist-heading');
    const todoChecklist = document.querySelector('#todo-checklist');
-   const checkmarkBtn = document.querySelector('#checkmark');
    const checkmarkSymbol = document.querySelector('#checkmark-symbol');
    const editTodoBtn = document.querySelector('#edit-todo');
    const deleteTodoBtn = document.querySelector('#delete-todo');
@@ -66,11 +65,9 @@ document.addEventListener('DOMContentLoaded', () => {
             let priorityColor = (todo.priority === 'low') ? 'blue' :
                                 (todo.priority === 'medium') ? 'yellow' : 
                                 (todo.priority === 'high') ? 'red' : 'dark';
-            let circle = (todo.finished) ? 'fa-solid fa-circle' : 'fa-regular fa-circle';
 
             content = content.replace(/\[ID\]/g, todo.id);
             content = content.replace(/\[TITLE\]/g, todo.title);
-            content = content.replace(/\[CIRCLE\]/g, circle);
             content = content.replace(/\[PRIORITY-COLOR\]/g, priorityColor);
             li.innerHTML = content;
             result.push(li);
@@ -124,8 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
          todoChecklistHeading.style.display = 'none';
       }
 
-      if (todoObj.finished) checkmarkSymbol.className = `fa-solid fa-circle text-${priorityColor}`;
-      else checkmarkSymbol.className = `fa-regular fa-circle text-${priorityColor}`;
+      checkmarkSymbol.className = `todo__priority-circle fa-solid fa-circle text-${priorityColor}`;
    }
 
    function selectTodo(e) {
@@ -490,7 +486,6 @@ document.addEventListener('DOMContentLoaded', () => {
    todoChecklist.addEventListener('click', checkTask);
    reminderBtn.addEventListener('click', () => toggleReminderContainer());
    modalForm.addEventListener('submit', handleSubmission);
-   checkmarkBtn.addEventListener('click', checkTodo);
    editTodoBtn.addEventListener('click', () => openModal(null, 'edit'));
    deleteTodoBtn.addEventListener('click', deleteTodo);
 });

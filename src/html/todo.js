@@ -21,9 +21,7 @@ export default function appendTodo() {
          </li>
       </ul>
       <h1 class="fs-1 fw-bold m-0">
-         <button id="checkmark" class="todo__button todo__button--checkmark" title="Check todo">
-            <i id="checkmark-symbol" class=""></i>
-         </button>
+         <i id="checkmark-symbol" class=""></i>
          <span id="todo-title"></span>
       </h1>
    </div>

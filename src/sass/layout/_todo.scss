@@ -23,8 +23,8 @@
       }
    }
 
-   &__button--checkmark {
-      font-size: map.get($font-sizes, 1);
+   &__priority-circle {
+      margin-right: 1rem;
    }
 
    .checklist__checkbox {

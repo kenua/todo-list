@@ -18,6 +18,11 @@
          display: inline-block;
          margin-right: map.get($spacers, 2);
       }
+
+      .fa-circle {
+         font-size: .5rem;
+         vertical-align: middle;
+      }
    }
 
    &__item--flex {
