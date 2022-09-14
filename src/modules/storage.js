@@ -83,10 +83,24 @@ const storage = (function() {
       }
    };
 
-   const checkTask = function(todoId, checklistItemId) {
+   const checkTask = function(todoId = '', taskId = '') {
+      if (!(todoId instanceof String) && todoId.length === 0) {
+         throw new Error("todoId must be an string and it shouldn't be empty");
+      }
+
+      if (!(taskId instanceof String) && taskId.length === 0) {
+         throw new Error("taskId must be an string and it shouldn't be empty");
+      }
+
       let [ todo ] = _todos.filter(item => item.id === todoId);
 
-      if (todo) todo.check(checklistItemId);
+      todo.checklist = todo.checklist.map(task => {
+         if (task.id === taskId) {
+            task.finished = !task.finished;
+         }
+
+         return task;
+      });
    };
 
    return {

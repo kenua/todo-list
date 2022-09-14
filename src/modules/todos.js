@@ -42,22 +42,4 @@ function Todos(title = '', desc = '', checklist = [], reminder = null, priority 
    }
 }
 
-Todos.prototype.check = function(id = '') {
-   if (!(id instanceof String) && id.length === 0) {
-      throw new Error("id must be an string and it shouldn't be empty");
-   }
-
-   let result;
-
-   this.checklist = this.checklist.map(item => {
-      if (id === item.id) {
-         item.finished = !item.finished;
-         result = item;
-      }
-      return item;
-   });
-
-   return result;
-}
-
 export default Todos;
