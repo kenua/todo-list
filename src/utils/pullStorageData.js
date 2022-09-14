@@ -8,7 +8,9 @@ function pullStorageData() {
    folders.forEach( folder => storage.addFolder(folder) );
    todos = JSON.parse(todos);
    todos.forEach(todo => {
-      todo.reminder = new Date(todo.reminder);
+      if (todo.reminder) {
+         todo.reminder = new Date(todo.reminder);
+      }
       storage.addTodo(todo, todo.folder);
    });
 }
