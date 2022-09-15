@@ -1,15 +1,15 @@
 export default function appendTodo() {
    const todo = document.createElement('section');
 
-   todo.className = 'todo container-fuild p-3 p-lg-6';
+   todo.className = 'todo container-fuild p-6';
    todo.id = 'todo';
    todo.innerHTML = `
-   <div class="pb-5 border-bottom border-gray mb-3">
+   <div class="pb-5 border-bottom border-dark-gray mb-3">
       <ul class="list-unstyled d-flex align-items-center m-0 pb-3">
          <li class="me-auto">
             <span id="todo-reminder"></span>
          </li>
-         <li class="me-2">
+         <li class="me-4">
             <button id="edit-todo" class="todo__button" title="Edit todo">
                <i class="fa-solid fa-pen-to-square"></i>
             </button>
@@ -27,7 +27,7 @@ export default function appendTodo() {
    </div>
    
    <p id="todo-desc" class="mb-5"></p>
-   <h2 id="checklist-heading" class="fs-3 fw-bold mb-3 pb-3 border-bottom border-gray">Checklist:</h2>
+   <h2 id="checklist-heading" class="fs-3 fw-bold mb-3 pb-3 border-bottom border-dark-gray">Checklist:</h2>
    <ul id="todo-checklist" class="list-unstyled ps-5"></ul>
    `;
    document.querySelector('#content').append(todo);
