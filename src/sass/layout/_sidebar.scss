@@ -4,6 +4,7 @@
 .sidebar {
    background-color: $primary;
    box-shadow: 5px 5px 10px #0000004d;
+   margin: 0;
 
    &__item {
       text-align: left;
@@ -84,11 +85,8 @@
    }
 
    @include media-breakpoint-up(lg) {
-      width: 30%;
-      height: 100%;
+      width: 35%;
+      height: 100vh;
       overflow: auto;
-      position: fixed;
-      top: 0;
-      left: 0;
    }
 }
