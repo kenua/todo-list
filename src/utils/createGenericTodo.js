@@ -3,35 +3,27 @@ import storage from '../modules/storage.js';
 
 function createGenericTodo() {
    let welcomeTodo = new Todos(
-      'Welcome',
-      'Create a new todo item using the "+" button',
+      'Guide',
+      'Welcome to Todo List a webapp where you can create and manage to-do lists. You can create new tasks by clicking the ➕ icon on the right side of a folder. To create new folders click the "New Folder" on the sidebar and write a name for it. To delete a folder click the ➖ icon.',
       [],
       null,
       'low',
    );
-   let test2 = new Todos(
-      'test2',
-      'This todo is for checking the finished prop of a checklist item',
-      ['thing', 'thing2', 'thing3'],
+   let carrotCake = new Todos(
+      'Carrot Cake 🍰',
+      'These are the engredients needed for a carrot cake:',
+      [
+         '400g of flour',
+         '4 eggs 🥚',
+         '2 cups of salt and sugar',
+         '4 cups of grated carrots 🥕',
+         '¾ cup butter 🧈',
+      ],
       null,
-      'high',
+      'medium',
    );
-   /*
-   let welcomeTodo = new Todos(
-      'Welcome',
-      'Create a new todo item using the "+" button',
-      null,
-      'low',
-      false,
-   );
-   */
    storage.addTodo(welcomeTodo, 'todos');
-   storage.addTodo(test2, 'todos');
-
-   let todoId = storage.getTodos()[1].id;
-   let taskId = storage.getTodos()[1].checklist[0].id;
-
-   storage.checkTask(todoId, taskId);
+   storage.addTodo(carrotCake, 'todos');
 }
 
 export default createGenericTodo;
