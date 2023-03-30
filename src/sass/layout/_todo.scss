@@ -1,7 +1,7 @@
 @use 'sass:map';
 @use '../custom' as * ;
 
-.todo {
+.project {
    display: none;
 
    &__reminder {
@@ -27,7 +27,7 @@
       margin-right: 1rem;
    }
 
-   .checklist__checkbox {
+   .task__checkbox {
       width: 20px;
       height: 20px;
    }

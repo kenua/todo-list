@@ -13,7 +13,7 @@ function saveStorageData() {
    folders = JSON.stringify(folders);
    projects = JSON.stringify(projects);
    localStorage.setItem('folders', folders);
-   localStorage.setItem('todos', projects);
+   localStorage.setItem('projects', projects);
 }
 
 export default saveStorageData;

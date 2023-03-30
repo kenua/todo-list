@@ -3,22 +3,22 @@ import uniqid from 'uniqid';
 import storage from './modules/storage.js';
 import Project from './modules/project.js';
 import sanitizeText from './utils/sanitizeText.js';
-import appendModal from './html/modal.js';
-import appendSidebar from './html/sidebar.js';
-import appendTodo from './html/todo.js';
+import appendModal from './html/appendModal.js';
+import appendSidebar from './html/appendSidebar.js';
+import appendProject from './html/appendProject.js';
 import todoTaskItem from './html/markup/todoTaskItem.html';
-import todoFolderButton from './html/markup/todoFolderButton.html';
+import projectsFolderButton from './html/markup/projectsFolderButton.html';
 import customFolderButton from './html/markup/customFolderButton.html';
-import todoItemButton from './html/markup/todoItemButton.html';
+import projectItemButton from './html/markup/projectItemButton.html';
 import modalTaskItem from './html/markup/modalTaskItem.html';
 import saveStorageData from './utils/saveStorageData.js';
 import pullStorageData from './utils/pullStorageData.js';
-import createGenericTodo from './utils/createGenericTodo.js';
+import createGenericProjects from './utils/createGenericProjects.js';
 
 document.addEventListener('DOMContentLoaded', () => {
    appendModal();
    appendSidebar();
-   appendTodo();
+   appendProject();
 
    const newFolderBtn = document.querySelector('#new-folder-button');
    const newFolderForm = document.querySelector('#new-folder-form');
@@ -28,40 +28,40 @@ document.addEventListener('DOMContentLoaded', () => {
    const { 
       title: titleField, 
       description: descField, 
-      'checklist-name': checklistNameField,
+      'tasks-text': taskField,
       priority: priorityField,
       day: dayField, 
       month: monthField, 
       year: yearField,
    } = modalForm.elements;
    const modalTitle = document.querySelector('#modal__title');
-   const modalChecklistContainer = document.querySelector('#checklist-container');
-   const modalAddTaskBtn = document.querySelector('#checklist-add-button');
+   const modalTasksContainer = document.querySelector('#tasks-container');
+   const modalAddTaskBtn = document.querySelector('#tasks-add-button');
    const reminderBtn = document.querySelector('#reminder-button');
    const reminderContainer = document.querySelector('#reminder-container');
    const modalErrorMsg = document.querySelectorAll('.modal__error-msg');
-   const todoContainer = document.querySelector('#todo');
-   const todoTitle = document.querySelector('#todo-title');
-   const todoReminder = document.querySelector('#todo-reminder');
-   const todoDesc = document.querySelector('#todo-desc');
-   const todoChecklistHeading = document.querySelector('#checklist-heading');
-   const todoChecklist = document.querySelector('#todo-checklist');
+   const projectContainer = document.querySelector('#project');
+   const projectTitle = document.querySelector('#project-title');
+   const projectReminder = document.querySelector('#project-reminder');
+   const projectDesc = document.querySelector('#project-desc');
+   const projectTasksHeading = document.querySelector('#tasks-heading');
+   const projectTasks = document.querySelector('#project-checklist');
    const checkmarkSymbol = document.querySelector('#checkmark-symbol');
-   const editTodoBtn = document.querySelector('#edit-todo');
-   const deleteTodoBtn = document.querySelector('#delete-todo');
+   const editProjectBtn = document.querySelector('#edit-project');
+   const deleteProjectBtn = document.querySelector('#delete-project');
    let submissionType = null;
-   let newTodoFolder = null;
+   let newProjectFolder = null;
    let currentProjectId = null;
-   let selectedTodo = null;
-   let checklistItems = [];
+   let selectedProject = null;
+   let tasksItems = [];
 
-   function createTodoItems(folder) {
+   function createProjectLiNodes(folder) {
       let result = [];
 
       storage.getProjects().forEach(project => {
          if (project.folder === folder) {
             let li = document.createElement('li');
-            let content = todoItemButton;
+            let content = projectItemButton;
             let priorityColor = (project.priority === 'low') ? 'blue' :
                                 (project.priority === 'medium') ? 'yellow' : 
                                 (project.priority === 'high') ? 'red' : 'dark';
@@ -85,22 +85,22 @@ document.addEventListener('DOMContentLoaded', () => {
       }
    }
 
-   function printTodo(projectObj) {
+   function printProject(projectObj) {
       let priorityColor = (projectObj.priority === 'low') ? 'blue' :
                           (projectObj.priority === 'medium') ? 'yellow' : 
                           (projectObj.priority === 'high') ? 'red' : 'dark';
 
-      todoTitle.textContent = projectObj.title;
+      projectTitle.textContent = projectObj.title;
 
       if (projectObj.reminder) {
-         todoReminder.textContent = `${projectObj.reminder.getDate()}/${projectObj.reminder.getMonth() + 1}/${projectObj.reminder.getFullYear()}`;
-         todoReminder.className = `todo__reminder text-${priorityColor}`;
+         projectReminder.textContent = `${projectObj.reminder.getDate()}/${projectObj.reminder.getMonth() + 1}/${projectObj.reminder.getFullYear()}`;
+         projectReminder.className = `project__reminder text-${priorityColor}`;
       } else {
-         todoReminder.textContent = '';
-         todoReminder.className = '';
+         projectReminder.textContent = '';
+         projectReminder.className = '';
       }
 
-      todoDesc.textContent = projectObj.desc;
+      projectDesc.textContent = projectObj.desc;
 
       if (projectObj.tasks.length > 0) {
          let checklistContent = '';
@@ -114,57 +114,57 @@ document.addEventListener('DOMContentLoaded', () => {
             taskLi = taskLi.replace(/\[TASKNAME\]/g, task.taskName);
             checklistContent += taskLi;
          });
-         todoChecklist.innerHTML = checklistContent;
-         todoChecklistHeading.style.display = 'block';
+         projectTasks.innerHTML = checklistContent;
+         projectTasksHeading.style.display = 'block';
       } else {
-         todoChecklist.innerHTML = '';
-         todoChecklistHeading.style.display = 'none';
+         projectTasks.innerHTML = '';
+         projectTasksHeading.style.display = 'none';
       }
 
-      checkmarkSymbol.className = `todo__priority-circle fa-solid fa-circle text-${priorityColor}`;
+      checkmarkSymbol.className = `project__priority-circle fa-solid fa-circle text-${priorityColor}`;
    }
 
-   function selectTodo(e) {
+   function selectProject(e) {
       e.preventDefault();
 
       let anchor = e.target.closest('a.sidebar__anchor');
 
       if (anchor) {
          let [ project ] = storage.getProjects().filter(project => project.id === anchor.getAttribute('href'));
-         if (selectedTodo) selectedTodo.classList.remove('sidebar__item--selected');
+         if (selectedProject) selectedProject.classList.remove('sidebar__item--selected');
          anchor.classList.add('sidebar__item--selected');
-         selectedTodo = anchor;
-         todoContainer.style.display = 'block';
+         selectedProject = anchor;
+         projectContainer.style.display = 'block';
          currentProjectId = project.id;
-         printTodo(project);
+         printProject(project);
       }
    }
 
    function openModal(folder, type) {
-      // open modal to create a new todo
+      // open modal to create a new project
       if (type === 'new') {
          let today = new Date();
 
          submissionType = 'new';
-         newTodoFolder = folder;
+         newProjectFolder = folder;
          modal.classList.remove('modal--hidden');
          modalTitle.textContent = `New project in ${folder} folder`;
          dayField.value = today.getDate();
          monthField.value = today.getMonth() + 1;
          yearField.value = today.getFullYear();
       }
-      // open model to edit a todo
+      // open model to edit a project
       if (type === 'edit') {
          let [ project ] = storage.getProjects().filter(project => project.id === currentProjectId);
 
          submissionType = 'edit';
          modal.classList.remove('modal--hidden');
          modal.classList.add('modal--edit');
-         modalTitle.textContent = `Edit Todo`;
+         modalTitle.textContent = `Edit`;
          titleField.value = project.title;
          descField.value = project.desc;
-         checklistItems = project.tasks;
-         printChecklistItems();
+         tasksItems = project.tasks;
+         printModalTasks();
          priorityField.value = project.priority;
 
          if (project.reminder) {
@@ -183,12 +183,12 @@ document.addEventListener('DOMContentLoaded', () => {
       titleField.focus();
    }
 
-   function printTodoFolder() {
+   function printProjectFolder() {
       let todoFolder = document.createElement('li');
       let createBtn = document.createElement('button');
       let subList = document.createElement('ul');
 
-      todoFolder.innerHTML = todoFolderButton;
+      todoFolder.innerHTML = projectsFolderButton;
 
       createBtn.type = 'button';
       createBtn.className = 'sign-button';
@@ -196,9 +196,9 @@ document.addEventListener('DOMContentLoaded', () => {
       createBtn.innerHTML = '<i class="fa-solid fa-plus"></i>';
       createBtn.addEventListener('click', openModal.bind(null, 'projects', 'new'));
 
-      subList.className = 'sidebar__todos-list list-unstyled';
-      subList.append( ...createTodoItems('projects') );
-      subList.addEventListener('click', selectTodo);
+      subList.className = 'list-unstyled';
+      subList.append( ...createProjectLiNodes('projects') );
+      subList.addEventListener('click', selectProject);
 
       todoFolder.firstElementChild.append(createBtn);
       todoFolder.append(subList);
@@ -226,9 +226,9 @@ document.addEventListener('DOMContentLoaded', () => {
          createBtn.innerHTML = '<i class="fa-solid fa-plus"></i>';
          createBtn.addEventListener('click', () => openModal(folder, 'new'));
 
-         subList.className = 'sidebar__todos-list list-unstyled';
-         subList.append( ...createTodoItems(folder) );
-         subList.addEventListener('click', selectTodo);
+         subList.className = 'list-unstyled';
+         subList.append( ...createProjectLiNodes(folder) );
+         subList.addEventListener('click', selectProject);
 
          folderButton.firstElementChild.lastElementChild.append(deleteBtn, createBtn);
          folderButton.append(subList);
@@ -238,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
    function printSidebarContent() {
       folders.innerHTML = '';
-      printTodoFolder();
+      printProjectFolder();
       printCustomFolders();
    }
 
@@ -279,9 +279,9 @@ document.addEventListener('DOMContentLoaded', () => {
       // reset fields value of modal
       titleField.value = '';
       descField.value = '';
-      checklistNameField.value = '';
-      modalChecklistContainer.innerHTML = '';
-      checklistItems = [];
+      taskField.value = '';
+      modalTasksContainer.innerHTML = '';
+      tasksItems = [];
       priorityField.value = 'low';
       reminderBtn.value = 'off';
       reminderBtn.textContent = 'OFF';
@@ -330,7 +330,7 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
 
       if (validateSubmission()) {
-         // create new todo
+         // create new project
          if (submissionType === 'new') {
             let reminder = (reminderBtn.value === 'on') ? 
                           new Date(+yearField.value, +monthField.value - 1, +dayField.value) :
@@ -338,18 +338,18 @@ document.addEventListener('DOMContentLoaded', () => {
             let newTodo = new Project(
                sanitizeText(titleField.value),
                sanitizeText(descField.value),
-               checklistItems.map(item => item.taskName),
+               tasksItems.map(item => item.taskName),
                reminder,
                priorityField.value,
             );
 
-            storage.addProject(newTodo, newTodoFolder);
+            storage.addProject(newTodo, newProjectFolder);
             printSidebarContent();
             closeModal();
             saveStorageData();
-            checklistItems = [];
+            tasksItems = [];
          }
-         // edit todo
+         // edit project
          if (submissionType === 'edit') {
             let reminder = (reminderBtn.value === 'on') ? 
                           new Date(+yearField.value, +monthField.value - 1, +dayField.value) :
@@ -358,13 +358,13 @@ document.addEventListener('DOMContentLoaded', () => {
             storage.editProject(currentProjectId, {
                title: sanitizeText(titleField.value),
                desc: sanitizeText(descField.value),
-               tasks: checklistItems,
+               tasks: tasksItems,
                priority: priorityField.value,
                reminder,
             });
-            checklistItems = [];
+            tasksItems = [];
             printSidebarContent();
-            printTodo(...storage.getProjects().filter(project => project.id === currentProjectId));
+            printProject(...storage.getProjects().filter(project => project.id === currentProjectId));
             closeModal();
             saveStorageData();
          }
@@ -378,10 +378,10 @@ document.addEventListener('DOMContentLoaded', () => {
                           (todo.priority === 'high') ? 'red' : 'dark';
 
       storage.editTodo(currentProjectId, { finished: !todo.finished });
-      printTodo(...storage.getTodos().filter(todo => todo.id === currentProjectId));
+      printProject(...storage.getTodos().filter(todo => todo.id === currentProjectId));
 
       let circle = (!todo.finished) ? 'fa-solid fa-circle' : 'fa-regular fa-circle';
-      selectedTodo.firstElementChild.firstElementChild.className = `${circle} text-${priorityColor}`;
+      selectedProject.firstElementChild.firstElementChild.className = `${circle} text-${priorityColor}`;
       saveStorageData();
    }
 
@@ -391,13 +391,13 @@ document.addEventListener('DOMContentLoaded', () => {
          saveStorageData();
          printSidebarContent();
          currentProjectId = null;
-         todoContainer.style.display = 'none';
+         projectContainer.style.display = 'none';
       }
    }
 
-   function printChecklistItems() {
-      modalChecklistContainer.innerHTML = '';
-      checklistItems.forEach(item => {
+   function printModalTasks() {
+      modalTasksContainer.innerHTML = '';
+      tasksItems.forEach(item => {
          const taskItem = document.createElement('li');
          let content = modalTaskItem;
          let checkedAttribute = (item.finished) ? 'checked' : '';
@@ -405,24 +405,24 @@ document.addEventListener('DOMContentLoaded', () => {
          content = content.replace(/\[TASKNAME\]/g, item.taskName);
          content = content.replace(/\[CHECKED\]/g, checkedAttribute);
          content = content.replace(/\[ID\]/g, item.id);
-         taskItem.className = 'modal__checklist-item';
+         taskItem.className = 'modal__task-item';
          taskItem.innerHTML = content;
-         modalChecklistContainer.appendChild(taskItem);
+         modalTasksContainer.appendChild(taskItem);
       });
    }
 
-   function addChecklistItem() {
-      let taskName = sanitizeText(checklistNameField.value);
+   function addTaskItem() {
+      let taskName = sanitizeText(taskField.value);
 
       if (taskName.length > 0) {
-         checklistItems.push({
+         tasksItems.push({
             id: uniqid(),
             taskName: taskName,
             finished: false,
          });
-         printChecklistItems();
-         checklistNameField.value = '';
-         checklistNameField.focus();
+         printModalTasks();
+         taskField.value = '';
+         taskField.focus();
       }
    }
 
@@ -433,7 +433,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (target.type && target.type === 'checkbox') {
          let id = target.dataset.id;
 
-         checklistItems = checklistItems.map(task => {
+         tasksItems = tasksItems.map(task => {
             if (task.id === id) {
                task.finished = !task.finished;
             }
@@ -446,8 +446,8 @@ document.addEventListener('DOMContentLoaded', () => {
          let button = e.target.closest('button.sign-button');
          
          if (button && button.dataset.id) {
-            checklistItems = checklistItems.filter(item => item.id !== button.dataset.id);
-            printChecklistItems();
+            tasksItems = tasksItems.filter(item => item.id !== button.dataset.id);
+            printModalTasks();
          }
       }
    }
@@ -463,13 +463,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
    }
 
-   // print todos and/or folders from localStorage
+   // print projects and/or folders from localStorage
    if (localStorage.todos && JSON.parse(localStorage.todos).length > 0 || 
        localStorage.folders && JSON.parse(localStorage.folders).length > 0) {
       pullStorageData();
       printSidebarContent();
    } else {
-      createGenericTodo();
+      createGenericProjects();
       printSidebarContent();
    }
 
@@ -481,11 +481,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
    newFolderForm.addEventListener('submit', createNewFolder);
    modal.addEventListener('mousedown', e => (e.target.id === 'modal' || e.target.id === 'cancel-button') ? closeModal() : null);
-   modalAddTaskBtn.addEventListener('click', addChecklistItem);
-   modalChecklistContainer.addEventListener('click', handlechecklistButtons);
-   todoChecklist.addEventListener('click', checkTask);
+   modalAddTaskBtn.addEventListener('click', addTaskItem);
+   modalTasksContainer.addEventListener('click', handlechecklistButtons);
+   projectTasks.addEventListener('click', checkTask);
    reminderBtn.addEventListener('click', () => toggleReminderContainer());
    modalForm.addEventListener('submit', handleSubmission);
-   editTodoBtn.addEventListener('click', () => openModal(null, 'edit'));
-   deleteTodoBtn.addEventListener('click', deleteTodo);
+   editProjectBtn.addEventListener('click', () => openModal(null, 'edit'));
+   deleteProjectBtn.addEventListener('click', deleteTodo);
 });

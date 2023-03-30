@@ -57,14 +57,14 @@
       }
    }
 
-   &__checklist-container {
+   &__tasks-container {
       margin: 0;
       padding: 0;
       max-height: 500px;
       overflow: auto;
    }
 
-   &__checklist-item {
+   &__task-item {
       background-color: $secondary;
       padding: 0.5rem;
       border-radius: 6px;
@@ -74,11 +74,11 @@
       align-items: center;
    }
 
-   .checklist__name {
+   .task__name {
       margin: 0;
    }
 
-   .checklist__checkbox {
+   .task__checkbox {
       display: none;
    }
 
@@ -141,7 +141,7 @@
 }
 
 .modal--edit {
-   .checklist__checkbox {
+   .task__checkbox {
       display: inline-block;;
    }
 }

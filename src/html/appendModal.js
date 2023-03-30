@@ -25,22 +25,22 @@ export default function appendModal() {
       </div>
 
       <div class="mb-4">
-         <label for="checklist" class="modal__label">Tasks</label>
+         <label for="tasks" class="modal__label">Tasks</label>
          <div class="d-flex">
             <input 
                type="text" 
-               name="checklist-name" 
-               id="checklist" class="modal__input me-3" 
+               name="tasks-text"
+               id="tasks" class="modal__input me-3"
                placeholder="Take out trash"
             >
-            <button type="button" id="checklist-add-button" class="modal__button">Add</button>
+            <button type="button" id="tasks-add-button" class="modal__button">Add</button>
          </div>
          <p class="modal__error-msg">
             <i class="fa-solid fa-circle-exclamation"></i> 
             This field is required, it must be less than 250 characters long
          </p>
 
-         <ul id="checklist-container" class="modal__checklist-container"></ul>
+         <ul id="tasks-container" class="modal__tasks-container"></ul>
       </div>
 
       <div class="mb-4">
