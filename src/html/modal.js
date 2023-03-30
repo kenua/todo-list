@@ -25,7 +25,7 @@ export default function appendModal() {
       </div>
 
       <div class="mb-4">
-         <label for="checklist" class="modal__label">Checklist</label>
+         <label for="checklist" class="modal__label">Tasks</label>
          <div class="d-flex">
             <input 
                type="text" 

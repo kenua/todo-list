@@ -3,7 +3,7 @@
 import uniqid from 'uniqid';
 import sanitizeText from '../utils/sanitizeText.js';
 
-function Todos(title = '', desc = '', checklist = [], reminder = null, priority = 'low') {
+function Project(title = '', desc = '', tasks = [], reminder = null, priority = 'low') {
    title = sanitizeText(title);
    desc = sanitizeText(desc);
 
@@ -26,20 +26,20 @@ function Todos(title = '', desc = '', checklist = [], reminder = null, priority 
          throw new Error('priority is not valid');
    }
 
-   if (checklist instanceof Array) {
-      for (let i = 0; i < checklist.length; i++) {
-         let checklistObj = {
+   if (tasks instanceof Array) {
+      for (let i = 0; i < tasks.length; i++) {
+         let taskObj = {
             id: uniqid(),
-            taskName: checklist[i],
+            taskName: tasks[i],
             finished: false,
          };
 
-         checklist[i] = checklistObj;
+         tasks[i] = taskObj;
       }
-      this.checklist = checklist;
+      this.tasks = tasks;
    } else {
-      throw new Error('checklist must be an array');
+      throw new Error('tasks must be an array');
    }
 }
 
-export default Todos;
+export default Project;

@@ -2,18 +2,18 @@ import storage from '../modules/storage.js';
 
 function saveStorageData() {
    let folders = storage.getFolders();
-   let todos = storage.getTodos();
+   let projects = storage.getProjects();
 
-   todos = todos.map(todo => {
-      if (todo.reminder) {
-         todo.reminder = todo.reminder.toDateString();
+   projects = projects.map(project => {
+      if (project.reminder) {
+         project.reminder = project.reminder.toDateString();
       }
-      return todo;
+      return project;
    });
    folders = JSON.stringify(folders);
-   todos = JSON.stringify(todos);
+   projects = JSON.stringify(projects);
    localStorage.setItem('folders', folders);
-   localStorage.setItem('todos', todos);
+   localStorage.setItem('todos', projects);
 }
 
 export default saveStorageData;

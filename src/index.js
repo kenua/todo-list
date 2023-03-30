@@ -1,7 +1,7 @@
 import './sass/styles.scss';
 import uniqid from 'uniqid';
 import storage from './modules/storage.js';
-import Todos from './modules/todos.js';
+import Project from './modules/project.js';
 import sanitizeText from './utils/sanitizeText.js';
 import appendModal from './html/modal.js';
 import appendSidebar from './html/sidebar.js';
@@ -51,23 +51,23 @@ document.addEventListener('DOMContentLoaded', () => {
    const deleteTodoBtn = document.querySelector('#delete-todo');
    let submissionType = null;
    let newTodoFolder = null;
-   let currentTodoId = null;
+   let currentProjectId = null;
    let selectedTodo = null;
    let checklistItems = [];
 
    function createTodoItems(folder) {
       let result = [];
 
-      storage.getTodos().forEach(todo => {
-         if (todo.folder === folder) {
+      storage.getProjects().forEach(project => {
+         if (project.folder === folder) {
             let li = document.createElement('li');
             let content = todoItemButton;
-            let priorityColor = (todo.priority === 'low') ? 'blue' :
-                                (todo.priority === 'medium') ? 'yellow' : 
-                                (todo.priority === 'high') ? 'red' : 'dark';
+            let priorityColor = (project.priority === 'low') ? 'blue' :
+                                (project.priority === 'medium') ? 'yellow' : 
+                                (project.priority === 'high') ? 'red' : 'dark';
 
-            content = content.replace(/\[ID\]/g, todo.id);
-            content = content.replace(/\[TITLE\]/g, todo.title);
+            content = content.replace(/\[ID\]/g, project.id);
+            content = content.replace(/\[TITLE\]/g, project.title);
             content = content.replace(/\[PRIORITY-COLOR\]/g, priorityColor);
             li.innerHTML = content;
             result.push(li);
@@ -85,30 +85,30 @@ document.addEventListener('DOMContentLoaded', () => {
       }
    }
 
-   function printTodo(todoObj) {
-      let priorityColor = (todoObj.priority === 'low') ? 'blue' :
-                          (todoObj.priority === 'medium') ? 'yellow' : 
-                          (todoObj.priority === 'high') ? 'red' : 'dark';
+   function printTodo(projectObj) {
+      let priorityColor = (projectObj.priority === 'low') ? 'blue' :
+                          (projectObj.priority === 'medium') ? 'yellow' : 
+                          (projectObj.priority === 'high') ? 'red' : 'dark';
 
-      todoTitle.textContent = todoObj.title;
+      todoTitle.textContent = projectObj.title;
 
-      if (todoObj.reminder) {
-         todoReminder.textContent = `${todoObj.reminder.getDate()}/${todoObj.reminder.getMonth() + 1}/${todoObj.reminder.getFullYear()}`;
+      if (projectObj.reminder) {
+         todoReminder.textContent = `${projectObj.reminder.getDate()}/${projectObj.reminder.getMonth() + 1}/${projectObj.reminder.getFullYear()}`;
          todoReminder.className = `todo__reminder text-${priorityColor}`;
       } else {
          todoReminder.textContent = '';
          todoReminder.className = '';
       }
 
-      todoDesc.textContent = todoObj.desc;
+      todoDesc.textContent = projectObj.desc;
 
-      if (todoObj.checklist.length > 0) {
+      if (projectObj.tasks.length > 0) {
          let checklistContent = '';
 
-         todoObj.checklist.forEach(task => {
+         projectObj.tasks.forEach(task => {
             let taskLi = todoTaskItem;
    
-            taskLi = taskLi.replace(/\[TODOID\]/g, todoObj.id);
+            taskLi = taskLi.replace(/\[TODOID\]/g, projectObj.id);
             taskLi = taskLi.replace(/\[TASKID\]/g, task.id);
             taskLi = taskLi.replace(/\[CHECKED\]/g, (task.finished) ? 'checked' : '');
             taskLi = taskLi.replace(/\[TASKNAME\]/g, task.taskName);
@@ -130,13 +130,13 @@ document.addEventListener('DOMContentLoaded', () => {
       let anchor = e.target.closest('a.sidebar__anchor');
 
       if (anchor) {
-         let [ todo ] = storage.getTodos().filter(todo => todo.id === anchor.getAttribute('href'));
+         let [ project ] = storage.getProjects().filter(project => project.id === anchor.getAttribute('href'));
          if (selectedTodo) selectedTodo.classList.remove('sidebar__item--selected');
          anchor.classList.add('sidebar__item--selected');
          selectedTodo = anchor;
          todoContainer.style.display = 'block';
-         currentTodoId = todo.id;
-         printTodo(todo);
+         currentProjectId = project.id;
+         printTodo(project);
       }
    }
 
@@ -148,30 +148,30 @@ document.addEventListener('DOMContentLoaded', () => {
          submissionType = 'new';
          newTodoFolder = folder;
          modal.classList.remove('modal--hidden');
-         modalTitle.textContent = `Create new todo in ${folder} folder`;
+         modalTitle.textContent = `New project in ${folder} folder`;
          dayField.value = today.getDate();
          monthField.value = today.getMonth() + 1;
          yearField.value = today.getFullYear();
       }
       // open model to edit a todo
       if (type === 'edit') {
-         let [ todo ] = storage.getTodos().filter(todo => todo.id === currentTodoId);
+         let [ project ] = storage.getProjects().filter(project => project.id === currentProjectId);
 
          submissionType = 'edit';
          modal.classList.remove('modal--hidden');
          modal.classList.add('modal--edit');
          modalTitle.textContent = `Edit Todo`;
-         titleField.value = todo.title;
-         descField.value = todo.desc;
-         checklistItems = todo.checklist;
+         titleField.value = project.title;
+         descField.value = project.desc;
+         checklistItems = project.tasks;
          printChecklistItems();
-         priorityField.value = todo.priority;
+         priorityField.value = project.priority;
 
-         if (todo.reminder) {
+         if (project.reminder) {
             toggleReminderContainer();
-            dayField.value = todo.reminder.getDate();
-            monthField.value = todo.reminder.getMonth() + 1;
-            yearField.value = todo.reminder.getFullYear();
+            dayField.value = project.reminder.getDate();
+            monthField.value = project.reminder.getMonth() + 1;
+            yearField.value = project.reminder.getFullYear();
          } else {
             let today = new Date();
             dayField.value = today.getDate();
@@ -192,12 +192,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
       createBtn.type = 'button';
       createBtn.className = 'sign-button';
-      createBtn.title = "Add new todo";
+      createBtn.title = "Add new task";
       createBtn.innerHTML = '<i class="fa-solid fa-plus"></i>';
-      createBtn.addEventListener('click', openModal.bind(null, 'todos', 'new'));
+      createBtn.addEventListener('click', openModal.bind(null, 'projects', 'new'));
 
       subList.className = 'sidebar__todos-list list-unstyled';
-      subList.append( ...createTodoItems('todos') );
+      subList.append( ...createTodoItems('projects') );
       subList.addEventListener('click', selectTodo);
 
       todoFolder.firstElementChild.append(createBtn);
@@ -335,7 +335,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let reminder = (reminderBtn.value === 'on') ? 
                           new Date(+yearField.value, +monthField.value - 1, +dayField.value) :
                           null;
-            let newTodo = new Todos(
+            let newTodo = new Project(
                sanitizeText(titleField.value),
                sanitizeText(descField.value),
                checklistItems.map(item => item.taskName),
@@ -343,7 +343,7 @@ document.addEventListener('DOMContentLoaded', () => {
                priorityField.value,
             );
 
-            storage.addTodo(newTodo, newTodoFolder);
+            storage.addProject(newTodo, newTodoFolder);
             printSidebarContent();
             closeModal();
             saveStorageData();
@@ -355,16 +355,16 @@ document.addEventListener('DOMContentLoaded', () => {
                           new Date(+yearField.value, +monthField.value - 1, +dayField.value) :
                           null;
 
-            storage.editTodo(currentTodoId, {
+            storage.editProject(currentProjectId, {
                title: sanitizeText(titleField.value),
                desc: sanitizeText(descField.value),
-               checklist: checklistItems,
+               tasks: checklistItems,
                priority: priorityField.value,
                reminder,
             });
             checklistItems = [];
             printSidebarContent();
-            printTodo(...storage.getTodos().filter(todo => todo.id === currentTodoId));
+            printTodo(...storage.getProjects().filter(project => project.id === currentProjectId));
             closeModal();
             saveStorageData();
          }
@@ -372,13 +372,13 @@ document.addEventListener('DOMContentLoaded', () => {
    }
 
    function checkTodo() {
-      let [ todo ] = storage.getTodos().filter(todo => todo.id === currentTodoId);
+      let [ todo ] = storage.getTodos().filter(todo => todo.id === currentProjectId);
       let priorityColor = (todo.priority === 'low') ? 'blue' :
                           (todo.priority === 'medium') ? 'yellow' : 
                           (todo.priority === 'high') ? 'red' : 'dark';
 
-      storage.editTodo(currentTodoId, { finished: !todo.finished });
-      printTodo(...storage.getTodos().filter(todo => todo.id === currentTodoId));
+      storage.editTodo(currentProjectId, { finished: !todo.finished });
+      printTodo(...storage.getTodos().filter(todo => todo.id === currentProjectId));
 
       let circle = (!todo.finished) ? 'fa-solid fa-circle' : 'fa-regular fa-circle';
       selectedTodo.firstElementChild.firstElementChild.className = `${circle} text-${priorityColor}`;
@@ -387,10 +387,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
    function deleteTodo() {
       if ( confirm(`Do you want ot delete this todo?`) ) {
-         storage.removeTodo(currentTodoId);
+         storage.removeProject(currentProjectId);
          saveStorageData();
          printSidebarContent();
-         currentTodoId = null;
+         currentProjectId = null;
          todoContainer.style.display = 'none';
       }
    }
@@ -458,7 +458,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (target.type && target.type === 'checkbox') {
          let { todoId, taskId } = target.dataset;
 
-         storage.checkTask(todoId, taskId);
+         storage.checkProjectTask(todoId, taskId);
          saveStorageData();
       }
    }

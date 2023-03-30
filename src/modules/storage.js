@@ -4,9 +4,9 @@ import uniqid from 'uniqid';
 import sanitizeText from '../utils/sanitizeText.js';
 
 const storage = (function() {
-   let _todos = [];
+   let _projects = [];
    let _folders = [];
-   let _defaultFolder = 'todos';
+   let _defaultFolder = 'projects';
 
    const getFolders = function() {
       return [..._folders];
@@ -25,76 +25,76 @@ const storage = (function() {
    };
 
    const removeFolder = function(name) {
-      for (let i = 0; i < _todos.length; i++) {
-         if (_todos[i].folder === name) _todos[i].folder = _defaultFolder;
+      for (let i = 0; i < _projects.length; i++) {
+         if (_projects[i].folder === name) _projects[i].folder = _defaultFolder;
       }
 
       _folders = _folders.filter(folder => folder !== name);
    };
 
-   const getTodos = function() {
-      let todosCopy = [];
+   const getProjects = function() {
+      let projectsCopy = [];
 
-      _todos.forEach(todo => {
-         let { id, title, desc, priority, folder } = todo;
-         let copy = { id, title, desc, priority, folder, reminder: null, checklist: [] };
+      _projects.forEach(project => {
+         let { id, title, desc, priority, folder } = project;
+         let copy = { id, title, desc, priority, folder, reminder: null, tasks: [] };
 
-         if (todo.reminder) copy.reminder = new Date(todo.reminder);
+         if (project.reminder) copy.reminder = new Date(project.reminder);
 
-         for (let i = 0; i < todo.checklist.length; i++) {
-            let checklistItemCopy = {...todo.checklist[i]};
-            copy.checklist.push(checklistItemCopy);
+         for (let i = 0; i < project.tasks.length; i++) {
+            let projectTaskCopy = {...project.tasks[i]};
+            copy.tasks.push(projectTaskCopy);
          }
 
-         todosCopy.push(copy);
+         projectsCopy.push(copy);
       });
 
-      return todosCopy;
+      return projectsCopy;
    };
 
-   const addTodo = function(todoObj, folderName) {
+   const addProject = function(projectObj, folderName) {
       folderName = sanitizeText(String(folderName));
 
-      if (todoObj instanceof Object && folderName) {
-         todoObj.folder = (_folders.includes(folderName)) ? folderName : _defaultFolder;
-         todoObj.id = uniqid();
-         _todos.push(todoObj);
+      if (projectObj instanceof Object && folderName) {
+         projectObj.folder = (_folders.includes(folderName)) ? folderName : _defaultFolder;
+         projectObj.id = uniqid();
+         _projects.push(projectObj);
       }
    };
 
-   const removeTodo = function(id) {
-      _todos = _todos.filter(todo => todo.id !== id);
+   const removeProject = function(id) {
+      _projects = _projects.filter(project => project.id !== id);
    };
 
-   const editTodo = function(id, opt) {
+   const editProject = function(id, opt) {
       if (opt instanceof Object) {
-         let { title, desc, checklist, reminder, priority } = opt;
-         let [ todo ] = _todos.filter(todo => todo.id === id);
+         let { title, desc, tasks, reminder, priority } = opt;
+         let [ project ] = _projects.filter(project => project.id === id);
    
-         if (title) todo.title = sanitizeText(title);
-         if (desc) todo.desc = sanitizeText(desc);
-         if (reminder instanceof Date || reminder === null) todo.reminder = reminder;
+         if (title) project.title = sanitizeText(title);
+         if (desc) project.desc = sanitizeText(desc);
+         if (reminder instanceof Date || reminder === null) project.reminder = reminder;
          if (priority === 'low' || 
              priority === 'medium' || 
-             priority === 'high') todo.priority = priority;
-         if (checklist && checklist.length > 0) {
-            todo.checklist = checklist;
+             priority === 'high') project.priority = priority;
+         if (tasks && tasks.length > 0) {
+            project.tasks = tasks;
          }
       }
    };
 
-   const checkTask = function(todoId = '', taskId = '') {
-      if (!(todoId instanceof String) && todoId.length === 0) {
-         throw new Error("todoId must be an string and it shouldn't be empty");
+   const checkProjectTask = function(projectId = '', taskId = '') {
+      if (!(projectId instanceof String) && projectId.length === 0) {
+         throw new Error("projectId must be an string and it shouldn't be empty");
       }
 
       if (!(taskId instanceof String) && taskId.length === 0) {
          throw new Error("taskId must be an string and it shouldn't be empty");
       }
 
-      let [ todo ] = _todos.filter(item => item.id === todoId);
+      let [ project ] = _projects.filter(project => project.id === projectId);
 
-      todo.checklist = todo.checklist.map(task => {
+      project.tasks = project.tasks.map(task => {
          if (task.id === taskId) {
             task.finished = !task.finished;
          }
@@ -107,11 +107,11 @@ const storage = (function() {
       getFolders,
       addFolder,
       removeFolder,
-      getTodos,
-      addTodo,
-      removeTodo,
-      editTodo,
-      checkTask,
+      getProjects,
+      addProject,
+      removeProject,
+      editProject,
+      checkProjectTask,
    };
 })();
 

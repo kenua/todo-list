@@ -27,7 +27,7 @@ export default function appendTodo() {
    </div>
    
    <p id="todo-desc" class="mb-5"></p>
-   <h2 id="checklist-heading" class="fs-3 fw-bold mb-3 pb-3 border-bottom border-dark-gray">Checklist:</h2>
+   <h2 id="checklist-heading" class="fs-3 fw-bold mb-3 pb-3 border-bottom border-dark-gray">Tasks:</h2>
    <ul id="todo-checklist" class="list-unstyled ps-5"></ul>
    `;
    document.querySelector('#content').append(todo);
