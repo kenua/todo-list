@@ -44,8 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
    const projectTitle = document.querySelector('#project-title');
    const projectReminder = document.querySelector('#project-reminder');
    const projectDesc = document.querySelector('#project-desc');
-   const projectTasksHeading = document.querySelector('#tasks-heading');
-   const projectTasks = document.querySelector('#project-checklist');
+   const projectTasks = document.querySelector('#project-tasks');
    const checkmarkSymbol = document.querySelector('#checkmark-symbol');
    const editProjectBtn = document.querySelector('#edit-project');
    const deleteProjectBtn = document.querySelector('#delete-project');
@@ -115,10 +114,8 @@ document.addEventListener('DOMContentLoaded', () => {
             checklistContent += taskLi;
          });
          projectTasks.innerHTML = checklistContent;
-         projectTasksHeading.style.display = 'block';
       } else {
          projectTasks.innerHTML = '';
-         projectTasksHeading.style.display = 'none';
       }
 
       checkmarkSymbol.className = `project__priority-circle fa-solid fa-circle text-${priorityColor}`;
