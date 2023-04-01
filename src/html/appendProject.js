@@ -4,7 +4,7 @@ export default function appendProject() {
    project.className = 'project container-fuild p-6';
    project.id = 'project';
    project.innerHTML = `
-   <div class="pb-4 border-bottom border-dark-gray mb-4">
+   <div class="pb-4 border-bottom border-dark-gray">
       <ul class="list-unstyled d-flex align-items-center m-0 pb-3">
          <li class="me-auto">
             <span id="project-reminder"></span>
@@ -24,7 +24,7 @@ export default function appendProject() {
       <h1 id="project-title" class="fs-1 fw-bold m-0"></h1>
    </div>
    
-   <p id="project-desc" class="mb-4"></p>
+   <p id="project-desc" class="my-4"></p>
    <ul id="project-tasks" class="list-unstyled"></ul>
    `;
    document.querySelector('#content').append(project);
