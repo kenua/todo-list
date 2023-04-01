@@ -45,7 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
    const projectReminder = document.querySelector('#project-reminder');
    const projectDesc = document.querySelector('#project-desc');
    const projectTasks = document.querySelector('#project-tasks');
-   const checkmarkSymbol = document.querySelector('#checkmark-symbol');
    const editProjectBtn = document.querySelector('#edit-project');
    const deleteProjectBtn = document.querySelector('#delete-project');
    let submissionType = null;
@@ -117,8 +116,6 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
          projectTasks.innerHTML = '';
       }
-
-      checkmarkSymbol.className = `project__priority-circle fa-solid fa-circle text-${priorityColor}`;
    }
 
    function selectProject(e) {
@@ -181,25 +178,25 @@ document.addEventListener('DOMContentLoaded', () => {
    }
 
    function printProjectFolder() {
-      let todoFolder = document.createElement('li');
+      let projectsFolder = document.createElement('li');
       let createBtn = document.createElement('button');
       let subList = document.createElement('ul');
 
-      todoFolder.innerHTML = projectsFolderButton;
+      projectsFolder.innerHTML = projectsFolderButton;
 
       createBtn.type = 'button';
       createBtn.className = 'sign-button';
-      createBtn.title = "Add new task";
-      createBtn.innerHTML = '<i class="fa-solid fa-plus"></i>';
+      createBtn.title = "Add new project";
+      createBtn.innerHTML = '<svg class="sidebar__sign-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>';
       createBtn.addEventListener('click', openModal.bind(null, 'projects', 'new'));
 
       subList.className = 'list-unstyled';
       subList.append( ...createProjectLiNodes('projects') );
       subList.addEventListener('click', selectProject);
 
-      todoFolder.firstElementChild.append(createBtn);
-      todoFolder.append(subList);
-      folders.append(todoFolder);
+      projectsFolder.firstElementChild.append(createBtn);
+      projectsFolder.append(subList);
+      folders.append(projectsFolder);
    }
 
    function printCustomFolders() {
@@ -214,13 +211,13 @@ document.addEventListener('DOMContentLoaded', () => {
          deleteBtn.type = 'button';
          deleteBtn.className = 'sign-button';
          deleteBtn.title = "Delete folder";
-         deleteBtn.innerHTML = '<i class="fa-solid fa-minus"></i>';
+         deleteBtn.innerHTML = '<svg class="sidebar__sign-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"/></svg>';
          deleteBtn.addEventListener('click', () => deleteFolder(folder));
 
          createBtn.type = 'button';
          createBtn.className = 'sign-button';
-         createBtn.title = "Add new todo";
-         createBtn.innerHTML = '<i class="fa-solid fa-plus"></i>';
+         createBtn.title = "Add new project";
+         createBtn.innerHTML = '<svg class="sidebar__sign-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>';
          createBtn.addEventListener('click', () => openModal(folder, 'new'));
 
          subList.className = 'list-unstyled';

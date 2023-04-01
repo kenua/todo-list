@@ -27,6 +27,36 @@
       }
    }
 
+   &__folder-icon {
+      fill: $white;
+      width: 16px;
+      display: inline-block;
+      margin-right: map.get($spacers, 2);
+      margin-top: -3px;
+   }
+
+   &__chevron-icon {
+      fill: $white;
+      width: 10px;
+      display: inline-block;
+      margin-right: map.get($spacers, 2);
+      margin-top: -3px;
+   }
+
+   &__circle {
+      background-color: white;
+      width: 8px;
+      height: 8px;
+      display: inline-block;
+      margin-right: map.get($spacers, 2);
+      border-radius: 100%;
+   }
+
+   &__sign-icon {
+      fill: $white;
+      width: 14px;
+   }
+
    &__item--flex {
       display: flex;
       justify-content: space-between;
